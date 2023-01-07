@@ -1,7 +1,4 @@
-﻿using MyGen.Data.Models;
-using System.Collections.Concurrent;
-using System.Text;
-using System.Text.Json;
+﻿using System.Collections.Concurrent;
 
 namespace MyGen.Data;
 
@@ -9,19 +6,14 @@ public class CrudableRepository
 {
    private readonly ConcurrentBag<Guid> _deletedItems = new();
    private readonly ConcurrentDictionary<Guid, ICrudable> _entities = new();
-   private readonly JsonSerializerOptions _jsonSerializerOptions;
    private readonly string _path;
+   private readonly MyGenSerializer _serializer;
    private readonly ConcurrentDictionary<Guid, int> _tracker = new();
 
    public CrudableRepository(string path)
    {
       _path = path;
-
-      _jsonSerializerOptions = new JsonSerializerOptions
-      {
-         WriteIndented = true,
-         DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault
-      };
+      _serializer = new MyGenSerializer();
    }
 
    private enum EntityState
@@ -100,29 +92,7 @@ public class CrudableRepository
    private void LoadFromFile(string path)
    {
       using var stream = File.OpenRead(path);
-      using var reader = new StreamReader(stream, Encoding.UTF8);
-
-      Dictionary<string, string> meta = new();
-      while (true)
-      {
-         var line = reader.ReadLine();
-         if (string.IsNullOrEmpty(line)) { break; }
-         var p = line.IndexOf(':');
-         meta.Add(line[..p], line[(p + 1)..]);
-      }
-
-      string type = meta["type"];
-      int version = int.Parse(meta["version"]);
-
-      ICrudable entity = type switch
-      {
-         nameof(Person) => JsonSerializer.Deserialize<Person>(reader.ReadToEnd(), _jsonSerializerOptions)!,
-         nameof(Family) => JsonSerializer.Deserialize<Family>(reader.ReadToEnd(), _jsonSerializerOptions)!,
-         nameof(Source) => JsonSerializer.Deserialize<Source>(reader.ReadToEnd(), _jsonSerializerOptions)!,
-         nameof(LifeStory) => JsonSerializer.Deserialize<LifeStory>(reader.ReadToEnd(), _jsonSerializerOptions)!,
-         nameof(Media) => JsonSerializer.Deserialize<Media>(reader.ReadToEnd(), _jsonSerializerOptions)!,
-         _ => throw new InvalidDataException($"Can't deserialize type {type}")
-      };
+      var entity = _serializer.Read(stream, out _);
 
       _entities.TryAdd(entity.Id, entity);
       _tracker.TryAdd(entity.Id, entity.GetHashCode());
@@ -134,8 +104,11 @@ public class CrudableRepository
       switch (state)
       {
          case EntityState.Added:
-            WriteContent(entity, FileMode.CreateNew);
-            _tracker.TryAdd(entity.Id, entity.GetHashCode());
+            using (var stream = new FileStream(GetEntityPath(entity), FileMode.CreateNew))
+            {
+               _serializer.Write(stream, entity);
+               _tracker.TryAdd(entity.Id, entity.GetHashCode());
+            }
             break;
 
          case EntityState.Deleted:
@@ -145,8 +118,11 @@ public class CrudableRepository
             break;
 
          case EntityState.Modified:
-            WriteContent(entity, FileMode.Create);
-            _tracker[entity.Id] = entity.GetHashCode();
+            using (var stream = new FileStream(GetEntityPath(entity), FileMode.Create))
+            {
+               _serializer.Write(stream, entity);
+               _tracker[entity.Id] = entity.GetHashCode();
+            }
             break;
 
          case EntityState.Unmodified:
@@ -157,16 +133,4 @@ public class CrudableRepository
       }
    }
 
-   private void WriteContent<T>(T entity, FileMode fileMode) where T : ICrudable
-   {
-      using var stream = new FileStream(GetEntityPath(entity), fileMode);
-      using var writer = new StreamWriter(stream, Encoding.UTF8);
-      writer.WriteLine("type:{0}", entity.GetType().Name);
-      writer.WriteLine("version:{0}", entity.Version);
-      writer.WriteLine("updated:{0:o}", DateTime.UtcNow);
-      writer.WriteLine();
-
-      var json = JsonSerializer.Serialize(entity, entity.GetType(), _jsonSerializerOptions);
-      writer.WriteLine(json);
-   }
 }
