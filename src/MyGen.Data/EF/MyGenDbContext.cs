@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyGen.Data.Models;
+using MyGen.Data.EF.Models;
 
 #pragma warning disable CS8618
 
-namespace MyGen.Data;
+namespace MyGen.Data.EF;
 
 public class MyGenDbContext : DbContext
 {

@@ -2,7 +2,7 @@
 
 #pragma warning disable CS8618
 
-namespace MyGen.Data.Models;
+namespace MyGen.Data.EF.Models;
 
 public class LifeStorySource
 {

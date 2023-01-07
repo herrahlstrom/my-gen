@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 #pragma warning disable CS8618
 
-namespace MyGen.Data.Models;
+namespace MyGen.Data.EF.Models;
 
 [DebuggerDisplay("{Id} | {ReferenceId} | {Name} | {Url}")]
 public class Source

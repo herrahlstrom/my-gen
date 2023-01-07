@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 #pragma warning disable CS8618
 
-namespace MyGen.Data.Models;
+namespace MyGen.Data.EF.Models;
 
-public class LifeStoryType
+public class FamilyMemberType
 {
     [Column("id")]
     public int Id { get; set; }
 
-    [MaxLength(50)]
     [Column("name")]
+    [MaxLength(30)]
     public string Name { get; set; }
 }
