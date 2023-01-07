@@ -11,12 +11,12 @@ public class FileSystem : IFileSystem
 
    public FileStream CreateFileStream(string filename)
    {
-      return new FileStream(filename, FileMode.CreateNew);
+      return new FileStream(Path.Combine(_pwd, filename), FileMode.Create);
    }
 
    public void DeleteFile(string filename)
    {
-      File.Delete(filename);
+      File.Delete(Path.Combine(_pwd, filename));
    }
 
    public string[] GetFiles(string filter = "*.*")
