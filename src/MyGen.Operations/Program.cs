@@ -1,3 +1,5 @@
 ﻿using MyGen.Data;
 
-var repo = new CrudableRepository("C:\\Users\\marti\\source\\repos\\my-gen-data");
+var fs = new FileSystem("C:\\Users\\marti\\source\\repos\\my-gen-data");
+var repo = new CrudableRepository(fs);
+repo.Load();

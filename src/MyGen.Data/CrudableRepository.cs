@@ -6,17 +6,17 @@ public class CrudableRepository
 {
    private readonly ConcurrentBag<Guid> _deletedItems = new();
    private readonly ConcurrentDictionary<Guid, ICrudable> _entities = new();
-   private readonly string _path;
+   readonly IFileSystem _fileSystem;
    private readonly MyGenSerializer _serializer;
    private readonly ConcurrentDictionary<Guid, int> _tracker = new();
 
-   public CrudableRepository(string path)
-   {
-      _path = path;
-      _serializer = new MyGenSerializer();
-   }
+    public CrudableRepository(IFileSystem fileSystem)
+    {
+        _serializer = new MyGenSerializer();
+        _fileSystem = fileSystem;
+    }
 
-   private enum EntityState
+    private enum EntityState
    {
       Added,
       Modified,
@@ -46,7 +46,7 @@ public class CrudableRepository
 
    public void Load()
    {
-      var files = Directory.GetFiles(_path, "*.json");
+      var files = _fileSystem.GetFiles("*.json");
       Parallel.ForEach(files, new ParallelOptions()
       {
          MaxDegreeOfParallelism = 7
@@ -66,10 +66,7 @@ public class CrudableRepository
       }, SaveEntity);
    }
 
-   private string GetEntityPath(ICrudable entity)
-   {
-      return Path.Combine(_path, $"{entity.GetType().Name}-{entity.Id}.json");
-   }
+   private static string GetEntityName(ICrudable entity) => $"{entity.GetType().Name}-{entity.Id}.json";
 
    private EntityState GetState<T>(T entity) where T : ICrudable
    {
@@ -104,7 +101,7 @@ public class CrudableRepository
       switch (state)
       {
          case EntityState.Added:
-            using (var stream = new FileStream(GetEntityPath(entity), FileMode.CreateNew))
+            using (var stream = _fileSystem.CreateFileStream(GetEntityName(entity)))
             {
                _serializer.Write(stream, entity);
                _tracker.TryAdd(entity.Id, entity.GetHashCode());
@@ -112,13 +109,13 @@ public class CrudableRepository
             break;
 
          case EntityState.Deleted:
-            File.Delete(GetEntityPath(entity));
+            _fileSystem.DeleteFile(GetEntityName(entity));
             _entities.Remove(entity.Id, out _);
             _tracker.Remove(entity.Id, out _);
             break;
 
          case EntityState.Modified:
-            using (var stream = new FileStream(GetEntityPath(entity), FileMode.Create))
+            using (var stream = _fileSystem.CreateFileStream(GetEntityName(entity)))
             {
                _serializer.Write(stream, entity);
                _tracker[entity.Id] = entity.GetHashCode();

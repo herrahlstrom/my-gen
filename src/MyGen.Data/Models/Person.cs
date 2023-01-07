@@ -1,7 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Xml.Linq;
-
-namespace MyGen.Data.Models;
+﻿namespace MyGen.Data.Models;
 
 public class Person : ICrudable
 {
@@ -14,9 +11,9 @@ public class Person : ICrudable
    public string Profession { get; set; } = "";
    public string Notes { get; set; } = "";
 
-   public required ICollection<FamilyMember> Families { get; init; }
-   public required ICollection<LifeStoryMember> LifeStories { get; init; }
-   public required IList<Guid> MediaIds { get; init; }
+   public ICollection<FamilyMember> Families { get; init; } = Array.Empty<FamilyMember>();
+   public ICollection<LifeStoryMember> LifeStories { get; init; } = Array.Empty<LifeStoryMember>();
+   public IList<Guid> MediaIds { get; init; } = Array.Empty<Guid>();
 
    public override int GetHashCode()
    {

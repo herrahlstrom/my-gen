@@ -23,37 +23,6 @@ public class SerializerTest
    }
 
    [TestMethod]
-   public void Serialize_Media()
-   {
-      var model = new Media()
-      {
-         Id = Guid.NewGuid(),
-         Path = "path/to/media"
-      };
-
-      TestSerializer(model);
-   }
-
-   [TestMethod]
-   public void Serialize_Source()
-   {
-      var model = new Source()
-      {
-         Id = Guid.NewGuid(),
-         Name = "A II a 17 (1850-1894) | p 137 | a123_4",
-         Repository = "Fässberg (O)",
-         Volume = "A II a 17 (1850-1894)",
-         Page = "137",
-         ReferenceId = "a123_4",
-         Notes = "Sample text",
-         Type = SourceType.Other,
-         Url = "http://www.source.net"
-      };
-
-      TestSerializer(model);
-   }
-
-   [TestMethod]
    public void Serialize_LifeStory()
    {
       var model = new LifeStory()
@@ -68,6 +37,18 @@ public class SerializerTest
          {
             Guid.NewGuid(),
          }
+      };
+
+      TestSerializer(model);
+   }
+
+   [TestMethod]
+   public void Serialize_Media()
+   {
+      var model = new Media()
+      {
+         Id = Guid.NewGuid(),
+         Path = "path/to/media"
       };
 
       TestSerializer(model);
@@ -98,6 +79,25 @@ public class SerializerTest
             Guid.NewGuid(),
             Guid.NewGuid(),
          }
+      };
+
+      TestSerializer(model);
+   }
+
+   [TestMethod]
+   public void Serialize_Source()
+   {
+      var model = new Source()
+      {
+         Id = Guid.NewGuid(),
+         Name = "A II a 17 (1850-1894) | p 137 | a123_4",
+         Repository = "Fässberg (O)",
+         Volume = "A II a 17 (1850-1894)",
+         Page = "137",
+         ReferenceId = "a123_4",
+         Notes = "Sample text",
+         Type = SourceType.Other,
+         Url = "http://www.source.net"
       };
 
       TestSerializer(model);
