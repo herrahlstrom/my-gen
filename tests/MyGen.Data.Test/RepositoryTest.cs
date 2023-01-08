@@ -1,12 +1,14 @@
-﻿using MyGen.Data.Models;
+﻿using FluentAssertions;
+using MyGen.Data.Models;
+using MyGen.Data.Test.Services;
 
 namespace MyGen.Data.Test;
 
 [TestClass]
 public class RepositoryTest
 {
-   private Bogus.Faker _faker;
-   private FakeFileSystem _fileSystem = null!;
+   private readonly Bogus.Faker _faker;
+   private IFakeFileSystem _fileSystem = null!;
    private CrudableRepository _repository = null!;
 
    public RepositoryTest()
@@ -17,35 +19,22 @@ public class RepositoryTest
    [TestMethod]
    public void AddTwoThenRemoveOne_Persons_ShouldBeCorrectAmountOfFiles()
    {
-      Person martin = new Person()
-      {
-         Id = Guid.NewGuid(),
-         Firstname = "Martin",
-         Lastname = "Ahlström",
-         Sex = "M"
-      };
-
-      Person anders = new Person()
-      {
-         Id = Guid.NewGuid(),
-         Firstname = "Anders",
-         Lastname = "Andersson",
-         Sex = "M"
-      };
+      Person p1 = GetPerson();
+      Person p2 = GetPerson();
 
       _fileSystem.Count.Should().Be(0);
 
-      _repository.AddEntity(martin);
+      _repository.AddEntity(p1);
       _fileSystem.Count.Should().Be(0);
       _repository.Save();
       _fileSystem.Count.Should().Be(1);
 
-      _repository.AddEntity(anders);
+      _repository.AddEntity(p2);
       _fileSystem.Count.Should().Be(1);
       _repository.Save();
       _fileSystem.Count.Should().Be(2);
 
-      _repository.RemoveEntity(anders);
+      _repository.RemoveEntity(p2);
       _fileSystem.Count.Should().Be(2);
       _repository.Save();
       _fileSystem.Count.Should().Be(1);
@@ -54,7 +43,10 @@ public class RepositoryTest
    [TestCleanup]
    public void Cleanup()
    {
-      _fileSystem.Dispose();
+      if(_fileSystem is IDisposable disposable)
+      {
+         disposable.Dispose();
+      }
    }
 
    [TestMethod]
@@ -62,25 +54,27 @@ public class RepositoryTest
    {
       Person p1 = GetPerson();
       Person p2 = GetPerson();
+      
+      var allChanges = _fileSystem.MonitorChanges();
 
       _repository.AddEntity(p1);
       _repository.AddEntity(p2);
       _repository.Save();
 
-      HashSet<string> modifiedFiles = new();
-      _fileSystem.FileChanged += (_, e) => modifiedFiles.Add(e);
+      var editChanges = _fileSystem.MonitorChanges();
 
       p2.Firstname = "Lars";
 
       _repository.Save();
 
-      modifiedFiles.Should().ContainSingle();
+      editChanges.Should().ContainSingle();
+      allChanges.Count.Should().Be(2);
    }
 
    [TestInitialize]
    public void Initialize()
    {
-      _fileSystem = new FakeFileSystem();
+      _fileSystem = new ShadowFileSystem();
       _repository = new CrudableRepository(_fileSystem);
    }
 
