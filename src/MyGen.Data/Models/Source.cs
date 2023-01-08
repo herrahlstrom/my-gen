@@ -13,7 +13,6 @@ public class Source : ICrudable
    public string? Page { get; set; }
    public string? Url { get; set; }
    public string? ReferenceId { get; set; }
-   public string? ImagePath { get; set; }
    public string Notes { get; set; } = "";
 
    public SourceType Type { get; set; }
@@ -24,6 +23,11 @@ public class Source : ICrudable
    {
       return new { Id, Name, Repository, Volume, Page, Url, ReferenceId, ImagePath, Notes, Type }.GetHashCode();
    }
+
+   #region Obsolete
+   [Obsolete]
+   public string? ImagePath { get; set; }
+   #endregion
 }
 
 public enum SourceType

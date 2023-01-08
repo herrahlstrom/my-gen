@@ -9,7 +9,7 @@ public class FileSystem : IFileSystem
       _pwd = pwd;
    }
 
-   public FileStream CreateFileStream(string filename)
+   public Stream CreateFileStream(string filename)
    {
       return new FileStream(Path.Combine(_pwd, filename), FileMode.Create);
    }

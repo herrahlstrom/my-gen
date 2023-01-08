@@ -2,7 +2,7 @@
 
 public interface IFileSystem
 {
-   FileStream CreateFileStream(string filename);
+   Stream CreateFileStream(string filename);
 
    void DeleteFile(string filename);
 
