@@ -15,8 +15,8 @@
     <PackageReference Include="coverlet.collector" Version="3.1.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\MyGen.Cmdlet\MyGen.Cmdlet.csproj" />
-  </ItemGroup>
+   <ItemGroup>
+      <ProjectReference Include="..\..\src\MyGen.Cmdlets\MyGen.Cmdlets.csproj" />
+   </ItemGroup>
 
 </Project>

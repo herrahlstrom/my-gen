@@ -1,7 +1,7 @@
 ﻿using MyGen.Api.Shared.Models;
-using MyGen.Cmdlet.Models;
+using MyGen.Cmdlets.Models;
 
-namespace MyGen.Cmdlet;
+namespace MyGen.Cmdlets;
 internal class Mapper
 {
    public PSPerson ToPsModel(PersonDto dto)

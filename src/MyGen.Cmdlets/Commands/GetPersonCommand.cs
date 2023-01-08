@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MyGen.Api.Client;
-using MyGen.Cmdlet;
 using System.Management.Automation;
+
+namespace MyGen.Cmdlets;
 
 [Cmdlet(VerbsCommon.Get, "MyGenPerson")]
 public class GetPersonCommand : Cmdlet

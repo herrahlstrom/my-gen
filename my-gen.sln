@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Cmdlet", "src\MyGen.Cmdlet\MyGen.Cmdlet.csproj", "{B559C7EC-06EC-4364-9885-61CE8B111A1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Cmdlets", "src\MyGen.Cmdlets\MyGen.Cmdlets.csproj", "{B559C7EC-06EC-4364-9885-61CE8B111A1D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Data", "src\MyGen.Data\MyGen.Data.csproj", "{FF6576F5-06A2-42C3-9C0A-04A23B0DF4A3}"
 EndProject

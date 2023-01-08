@@ -1,6 +1,7 @@
 ﻿using AutoBogus;
 using FluentAssertions;
 using MyGen.Api.Shared.Models;
+using MyGen.Cmdlets;
 
 namespace MyGen.Cmdlet.Test;
 

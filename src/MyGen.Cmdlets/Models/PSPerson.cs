@@ -1,4 +1,4 @@
-﻿namespace MyGen.Cmdlet.Models;
+﻿namespace MyGen.Cmdlets.Models;
 
 public class PSPerson
 {

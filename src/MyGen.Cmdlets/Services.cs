@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MyGen.Api.Client;
 
-namespace MyGen.Cmdlet;
+namespace MyGen.Cmdlets;
 
 internal class Services : IServiceProvider, IDisposable
 {
