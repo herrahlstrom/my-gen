@@ -1,6 +1,4 @@
-﻿using MyGen.Data.Models;
-
-namespace MyGen.Cmdlet.Models;
+﻿namespace MyGen.Cmdlet.Models;
 
 public class PSPerson
 {
@@ -10,17 +8,4 @@ public class PSPerson
    public required string Sex { get; set; }
    public required string Profession { get; set; }
    public required string Notes { get; set; }
-
-   internal static PSPerson Get(Person entity)
-   {
-      return new PSPerson()
-      {
-         Id = entity.Id,
-         Firstname = entity.Firstname,
-         Lastname = entity.Lastname,
-         Sex = entity.Sex,
-         Profession = entity.Profession,
-         Notes = entity.Notes
-      };
-   }
 }
