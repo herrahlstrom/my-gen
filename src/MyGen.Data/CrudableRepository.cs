@@ -6,17 +6,17 @@ public class CrudableRepository
 {
    private readonly ConcurrentBag<Guid> _deletedItems = new();
    private readonly ConcurrentDictionary<Guid, ICrudable> _entities = new();
-   readonly IFileSystem _fileSystem;
+   private readonly IFileSystem _fileSystem;
    private readonly MyGenSerializer _serializer;
    private readonly ConcurrentDictionary<Guid, int> _tracker = new();
 
-    public CrudableRepository(IFileSystem fileSystem)
-    {
-        _serializer = new MyGenSerializer();
-        _fileSystem = fileSystem;
-    }
+   public CrudableRepository(IFileSystem fileSystem)
+   {
+      _serializer = new MyGenSerializer();
+      _fileSystem = fileSystem;
+   }
 
-    private enum EntityState
+   private enum EntityState
    {
       Added,
       Modified,
@@ -129,5 +129,4 @@ public class CrudableRepository
             throw new NotSupportedException($"Invalid state of entity: {state}");
       }
    }
-
 }
