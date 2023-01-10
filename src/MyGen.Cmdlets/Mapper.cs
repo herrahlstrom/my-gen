@@ -16,4 +16,18 @@ internal class Mapper
          Notes = dto.Notes
       };
    }
+
+   public PSLifeStory ToPsModel(LifeStoryDto dto)
+   {
+      return new PSLifeStory()
+      {
+         Id = dto.Id,
+         Name = dto.Name,
+         Date = dto.Date,
+         EndDate = dto.EndDate,
+         Location = dto.Location,
+         Type = dto.Type,
+         Notes = dto.Notes
+      };
+   }
 }

@@ -17,9 +17,34 @@ app.MapGet("person/{id:guid}", (CrudableRepository repository, Guid id) =>
       ? Results.Json(Mapper.ToDto(p))
       : Results.NotFound());
 
+app.MapGet("lifestory/{id:guid}", (CrudableRepository repository, Guid id) =>
+   repository.TryGetEntity(id, out LifeStory ls)
+      ? Results.Json(Mapper.ToDto(ls, null))
+      : Results.NotFound());
 
 app.MapGet("person/find", (CrudableRepository repository, string filter) =>
    repository.GetEntities<Person>().Where(x => Match(x, filter)).Select(Mapper.ToDto));
+
+app.MapGet("person/{id:guid}/lifestories", (CrudableRepository repository, Guid id) =>
+{
+   if (!repository.TryGetEntity(id, out Person p))
+   {
+      return Results.NotFound();
+   }
+
+   List<LifeStoryDto> result = new();
+   if (p.LifeStories is not null)
+   {
+      foreach (var ls in p.LifeStories)
+      {
+         var lifeStory = repository.GetEntity<LifeStory>(ls.LifeStoryId);
+         result.Add(Mapper.ToDto(lifeStory, ls));
+      }
+   }
+   return Results.Json(result);
+});
+
+
 app.Run();
 
 bool Match(Person p, string Filter)

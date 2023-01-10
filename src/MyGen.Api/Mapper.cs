@@ -7,6 +7,24 @@ namespace MyGen.Api;
 
 internal static class Mapper
 {
+   public static LifeStoryDto ToDto(LifeStory lifeStory, LifeStoryMember? lifeStoryMember)
+   {
+      var typeDisplayAttribute = typeof(LifeStoryType)
+         .GetMember(lifeStory.Type.ToString())
+         .First()
+         .GetCustomAttribute<DisplayAttribute>();
+
+      return new LifeStoryDto()
+      {
+         Id = lifeStory.Id,
+         Date = lifeStoryMember?.Date ?? lifeStory.Date ?? "",
+         EndDate = lifeStoryMember?.EndDate ?? lifeStory.EndDate ?? "",
+         Name = lifeStory.Name ?? "",
+         Location = lifeStory.Location ?? "",
+         Notes = lifeStory.Notes ?? "",
+         Type = new KeyValuePair<int, string>((int)lifeStory.Type, typeDisplayAttribute?.Name ?? "")
+      };
+   }
 
    public static PersonDto ToDto(Person p)
    {
