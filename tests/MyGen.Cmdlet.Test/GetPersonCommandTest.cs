@@ -17,6 +17,15 @@ public class GetPersonCommandTest
    private Mock<IApiClient> _clientMock = null!;
    private Services? _services;
 
+   [TestInitialize]
+   public void Initialize()
+   {
+      _clientMock = new Mock<IApiClient>();
+      _services = new Services(sc =>
+      {
+         sc.AddTransient<IApiClient>(_ => _clientMock.Object);
+      });
+   }
 
    [TestCleanup]
    public void Cleanup()
@@ -64,13 +73,4 @@ public class GetPersonCommandTest
       _clientMock.Verify(e => e.GetPersonAsync(id), Times.Once);
    }
 
-   [TestInitialize]
-   public void Initialize()
-   {
-      _clientMock = new Mock<IApiClient>();
-      _services = new Services(sc =>
-      {
-         sc.AddTransient<IApiClient>(_ => _clientMock.Object);
-      });
-   }
 }

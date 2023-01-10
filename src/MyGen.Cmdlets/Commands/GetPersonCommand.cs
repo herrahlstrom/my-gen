@@ -8,35 +8,29 @@ namespace MyGen.Cmdlets;
 public class GetPersonCommand : Cmdlet
 {
    [Parameter]
-   public Guid Id { get; set; } = Guid.Empty;
-
-   [Parameter]
    public string Filter { get; set; } = "";
 
-   private IApiClient _client;
-   private Mapper _mapper;
-
-   public GetPersonCommand()
-   {
-      IServiceProvider sp = Services.Instance;
-      _client = sp.GetRequiredService<IApiClient>();
-      _mapper = sp.GetRequiredService<Mapper>();
-   }
+   [Parameter]
+   public Guid Id { get; set; } = Guid.Empty;
 
    protected override void ProcessRecord()
    {
+      IServiceProvider sp = Services.Instance;
+      var client = sp.GetRequiredService<IApiClient>();
+      var mapper = sp.GetRequiredService<Mapper>();
+
       if (Id != Guid.Empty)
       {
-         var result = _client.GetPersonAsync(Id).GetAwaiter().GetResult();
+         var result = client.GetPersonAsync(Id).GetAwaiter().GetResult();
          if (result != null)
          {
-            WriteObject(_mapper.ToPsModel(result));
+            WriteObject(mapper.ToPsModel(result));
          }
       }
       else
       {
-         var result = _client.GetPersonsAsync(Filter).GetAwaiter().GetResult();
-         WriteObject(result.Select(_mapper.ToPsModel), true);
+         var result = client.GetPersonsAsync(Filter).GetAwaiter().GetResult();
+         WriteObject(result.Select(mapper.ToPsModel), true);
       }
    }
 }
