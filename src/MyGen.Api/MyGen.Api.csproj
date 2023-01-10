@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MyGen.Api.Shared\MyGen.Api.Shared.csproj" />
     <ProjectReference Include="..\MyGen.Data\MyGen.Data.csproj" />
   </ItemGroup>
 

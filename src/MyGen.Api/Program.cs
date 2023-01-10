@@ -1,3 +1,5 @@
+using MyGen.Api;
+using MyGen.Api.Shared.Models;
 using MyGen.Data;
 using MyGen.Data.Models;
 
@@ -10,9 +12,14 @@ var app = builder.Build();
 // Load repository
 app.Services.GetRequiredService<CrudableRepository>().Load();
 
-app.MapGet("person/{id:guid}", (CrudableRepository repository, Guid id) => repository.GetEntity<Person>(id));
-app.MapGet("person/find", (CrudableRepository repository, string filter) => repository.GetEntities<Person>().Where(x => Match(x, filter)));
+app.MapGet("person/{id:guid}", (CrudableRepository repository, Guid id) =>
+   repository.TryGetEntity(id, out Person p)
+      ? Results.Json(Mapper.ToDto(p))
+      : Results.NotFound());
 
+
+app.MapGet("person/find", (CrudableRepository repository, string filter) =>
+   repository.GetEntities<Person>().Where(x => Match(x, filter)).Select(Mapper.ToDto));
 app.Run();
 
 bool Match(Person p, string Filter)

@@ -66,6 +66,17 @@ public class CrudableRepository
       }, SaveEntity);
    }
 
+   public bool TryGetEntity<T>(Guid id, out T entity) where T : ICrudable
+   {
+      if (_entities.TryGetValue(id, out var crudable) && crudable is T item)
+      {
+         entity = item;
+         return true;
+      }
+
+      entity = default;
+      return false;
+   }
    private static string GetEntityName(ICrudable entity) => $"{entity.GetType().Name}-{entity.Id}.json";
 
    private EntityState GetState<T>(T entity) where T : ICrudable
