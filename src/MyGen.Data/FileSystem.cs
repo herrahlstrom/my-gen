@@ -9,18 +9,28 @@ public class FileSystem : IFileSystem
       _pwd = pwd;
    }
 
-   public Stream CreateFileStream(string filename)
-   {
-      return new FileStream(Path.Combine(_pwd, filename), FileMode.Create);
-   }
-
    public void DeleteFile(string filename)
    {
       File.Delete(Path.Combine(_pwd, filename));
    }
 
-   public string[] GetFiles(string filter = "*.*")
+   public IEnumerable<string> GetFiles()
    {
-      return Directory.GetFiles(_pwd, filter);
+      return Directory.GetFiles(_pwd);
+   }
+
+   public IEnumerable<string> GetFiles(string extension)
+   {
+      return Directory.GetFiles(_pwd, $"*{extension}");
+   }
+
+   public Stream OpenForRead(string filename)
+   {
+      return new FileStream(Path.Combine(_pwd, filename), FileMode.Open);
+   }
+
+   public Stream OpenForWrite(string filename)
+   {
+      return new FileStream(Path.Combine(_pwd, filename), FileMode.Create);
    }
 }

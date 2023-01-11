@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using MyGen.Data.Models;
-using MyGen.Data.Test.Services;
+using MyGen.Data.Test.FileSystem;
 
 namespace MyGen.Data.Test;
 
@@ -17,33 +17,49 @@ public class RepositoryTest
    }
 
    [TestMethod]
+   public void AddOne_Persons_ShouldBeCorrectAmountOfFiles()
+   {
+      Person p1 = GetPerson();
+
+      _repository.AddEntity(p1);
+      _repository.Save();
+
+      VerifyFileSystem(created: 1, count: 1);
+   }
+
+   [TestMethod]
+   public void AddTwo_Persons_ShouldBeCorrectAmountOfFiles()
+   {
+      Person p1 = GetPerson();
+      Person p2 = GetPerson();
+
+      _repository.AddEntity(p1);
+      _repository.AddEntity(p2);
+      _repository.Save();
+
+      VerifyFileSystem(created: 2, count: 2);
+   }
+
+   [TestMethod]
    public void AddTwoThenRemoveOne_Persons_ShouldBeCorrectAmountOfFiles()
    {
       Person p1 = GetPerson();
       Person p2 = GetPerson();
 
-      _fileSystem.Count.Should().Be(0);
-
       _repository.AddEntity(p1);
-      _fileSystem.Count.Should().Be(0);
-      _repository.Save();
-      _fileSystem.Count.Should().Be(1);
-
       _repository.AddEntity(p2);
-      _fileSystem.Count.Should().Be(1);
       _repository.Save();
-      _fileSystem.Count.Should().Be(2);
 
       _repository.RemoveEntity(p2);
-      _fileSystem.Count.Should().Be(2);
       _repository.Save();
-      _fileSystem.Count.Should().Be(1);
+
+      VerifyFileSystem(created: 2, removed: 1, count: 1);
    }
 
    [TestCleanup]
    public void Cleanup()
    {
-      if(_fileSystem is IDisposable disposable)
+      if (_fileSystem is IDisposable disposable)
       {
          disposable.Dispose();
       }
@@ -54,27 +70,22 @@ public class RepositoryTest
    {
       Person p1 = GetPerson();
       Person p2 = GetPerson();
-      
-      var allChanges = _fileSystem.MonitorChanges();
 
       _repository.AddEntity(p1);
       _repository.AddEntity(p2);
       _repository.Save();
 
-      var editChanges = _fileSystem.MonitorChanges();
-
       p2.Firstname = "Lars";
 
       _repository.Save();
 
-      editChanges.Should().ContainSingle();
-      allChanges.Count.Should().Be(2);
+      VerifyFileSystem(created: 2, updated: 1, count: 2);
    }
 
    [TestInitialize]
    public void Initialize()
    {
-      _fileSystem = new ShadowFileSystem();
+      _fileSystem = new InMemoryFileSystem();
       _repository = new CrudableRepository(_fileSystem);
    }
 
@@ -89,5 +100,15 @@ public class RepositoryTest
          Profession = _faker.Person.Company.Bs,
          Notes = _faker.Random.Words(5)
       };
+   }
+
+   private void VerifyFileSystem(int created = 0, int updated = 0, int opened = 0, int removed = 0, int count = 0)
+   {
+      _fileSystem.Count.Should().Be(count);
+
+      _fileSystem.FilesCreated.Should().Be(created);
+      _fileSystem.FilesUpdated.Should().Be(updated);
+      _fileSystem.FilesOpened.Should().Be(opened);
+      _fileSystem.FilesRemoved.Should().Be(removed);
    }
 }

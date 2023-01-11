@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MyGen.Data;
 
@@ -46,7 +47,7 @@ public class CrudableRepository
 
    public void Load()
    {
-      var files = _fileSystem.GetFiles("*.json");
+      var files = _fileSystem.GetFiles(".json");
       Parallel.ForEach(files, new ParallelOptions()
       {
          MaxDegreeOfParallelism = 7
@@ -66,7 +67,7 @@ public class CrudableRepository
       }, SaveEntity);
    }
 
-   public bool TryGetEntity<T>(Guid id, out T entity) where T : ICrudable
+   public bool TryGetEntity<T>(Guid id, [MaybeNullWhen(false)] out T entity) where T : ICrudable
    {
       if (_entities.TryGetValue(id, out var crudable) && crudable is T item)
       {
@@ -99,7 +100,7 @@ public class CrudableRepository
 
    private void LoadFromFile(string path)
    {
-      using var stream = File.OpenRead(path);
+      using var stream = _fileSystem.OpenForRead(path);
       var entity = _serializer.Read(stream, out _);
 
       _entities.TryAdd(entity.Id, entity);
@@ -112,7 +113,7 @@ public class CrudableRepository
       switch (state)
       {
          case EntityState.Added:
-            using (var stream = _fileSystem.CreateFileStream(GetEntityName(entity)))
+            using (var stream = _fileSystem.OpenForWrite(GetEntityName(entity)))
             {
                _serializer.Write(stream, entity);
                _tracker.TryAdd(entity.Id, entity.GetHashCode());
@@ -126,7 +127,7 @@ public class CrudableRepository
             break;
 
          case EntityState.Modified:
-            using (var stream = _fileSystem.CreateFileStream(GetEntityName(entity)))
+            using (var stream = _fileSystem.OpenForWrite(GetEntityName(entity)))
             {
                _serializer.Write(stream, entity);
                _tracker[entity.Id] = entity.GetHashCode();

@@ -2,9 +2,12 @@
 
 public interface IFileSystem
 {
-   Stream CreateFileStream(string filename);
+   Stream OpenForWrite(string filename);
+   
+   Stream OpenForRead(string filename);
 
    void DeleteFile(string filename);
-
-   string[] GetFiles(string filter = "*.*");
+   
+   IEnumerable<string> GetFiles();
+   IEnumerable<string> GetFiles(string extension);
 }
