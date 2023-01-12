@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MyGen.Api.Client;
+using Refit;
 
 namespace MyGen.Cmdlets;
 
@@ -49,8 +50,8 @@ internal class Services : IServiceProvider, IDisposable
 
    private static void CreateDefaultServiceCollection(ServiceCollection sc)
    {
-      sc.AddHttpClient<ApiClient>(config => { config.BaseAddress = new Uri("http://localhost:5022"); });
-      sc.AddTransient<IApiClient, ApiClient>();
+      sc.AddRefitClient<IApiClient>()
+         .ConfigureHttpClient(client => client.BaseAddress = new Uri("http://localhost:5022"));
 
       sc.AddTransient<Mapper>();
    }
