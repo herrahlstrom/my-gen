@@ -2,11 +2,11 @@
 
 public class PSLifeStory
 {
-   public Guid Id { get; set; }
-   public string Name { get; set; }
-   public string Date { get; set; }
-   public string EndDate { get; set; }
-   public string Location { get; set; }
-   public string Notes { get; set; }
-   public KeyValuePair<int, string> Type { get; set; }
+   public required Guid Id { get; init; }
+   public required string Name { get; set; }
+   public required string Date { get; set; }
+   public required string EndDate { get; set; }
+   public required string Location { get; set; }
+   public required string Notes { get; set; }
+   public required KeyValuePair<int, string> Type { get; set; }
 }
