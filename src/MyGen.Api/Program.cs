@@ -71,7 +71,7 @@ bool Match(Person p, string Filter)
    return Filter.ToLower().Split().All(word =>
       p.Firstname.Contains(word, StringComparison.OrdinalIgnoreCase) ||
       p.Lastname.Contains(word, StringComparison.OrdinalIgnoreCase) ||
-      p.Profession.Contains(word, StringComparison.OrdinalIgnoreCase) ||
-      p.Notes.Contains(word, StringComparison.OrdinalIgnoreCase)
+      p.Profession?.Contains(word, StringComparison.OrdinalIgnoreCase) == true ||
+      p.Notes?.Contains(word, StringComparison.OrdinalIgnoreCase) == true
   );
 }
