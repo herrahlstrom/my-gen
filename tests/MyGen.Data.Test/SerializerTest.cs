@@ -41,14 +41,28 @@ public class SerializerTest
 
       TestSerializer(model);
    }
-
+   
    [TestMethod]
    public void Serialize_Media()
    {
       var model = new Media()
       {
          Id = Guid.NewGuid(),
-         Path = "path/to/media"
+         Path = "path/to/media",
+         FileCrc = "abc123",
+         Missing = true,
+         Notes = "notes",
+         Size = 1234,
+         Title = "title",
+         Type = MediaType.Potrait,
+         Meta = new List<MediaMeta>()
+         {
+            new MediaMeta()
+            {
+               Key = "Key",
+               Value = "Value"
+            }
+         }
       };
 
       TestSerializer(model);
@@ -97,7 +111,12 @@ public class SerializerTest
          ReferenceId = "a123_4",
          Notes = "Sample text",
          Type = SourceType.Other,
-         Url = "http://www.source.net"
+         Url = "http://www.source.net",
+         MediaIds = new List<Guid>
+         {
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+         }
       };
 
       TestSerializer(model);

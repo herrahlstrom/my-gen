@@ -14,7 +14,7 @@ internal class MyGenSerializer
       _jsonSerializerOptions = new JsonSerializerOptions
       {
          WriteIndented = true,
-         DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault
+         DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
       };
    }
 
