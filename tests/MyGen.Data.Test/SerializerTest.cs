@@ -11,7 +11,7 @@ public class SerializerTest
       var model = new Family()
       {
          Id = Guid.NewGuid(),
-         LifeStories = new[]
+         LifeStories = new List<LifeStoryMember>
          {
             new LifeStoryMember(){LifeStoryId = Guid.NewGuid()},
             new LifeStoryMember(){LifeStoryId = Guid.NewGuid()}
@@ -33,7 +33,7 @@ public class SerializerTest
          Location = "Mölndal",
          Name = "Dummy name",
          Type = LifeStoryType.Boende,
-         SourceIds = new[]
+         SourceIds = new List<Guid>
          {
             Guid.NewGuid(),
          }
@@ -65,16 +65,16 @@ public class SerializerTest
          Sex = "M",
          Profession = "Software developer",
          Notes = "Test notes",
-         Families = new[]
+         Families = new List<FamilyMember>
          {
             new FamilyMember() { FamilyId = Guid.NewGuid(), MemberType = FamilyMemberType.Husband },
          },
-         LifeStories = new[]
+         LifeStories = new List<LifeStoryMember>
          {
             new LifeStoryMember(){LifeStoryId = Guid.NewGuid(), Date = "1984-09-05"},
             new LifeStoryMember(){LifeStoryId = Guid.NewGuid(), Date = "1984-09-05", EndDate = "2007-02-11"}
          },
-         MediaIds = new[]
+         MediaIds = new List<Guid>
          {
             Guid.NewGuid(),
             Guid.NewGuid(),
