@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MyGen.Data\MyGen.Data.csproj" />
   </ItemGroup>
 
