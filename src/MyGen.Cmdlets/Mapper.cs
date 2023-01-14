@@ -16,6 +16,17 @@ internal class Mapper
          Notes = dto.Notes
       };
    }
+   
+   public PSMedia ToPsModel(MediaDto dto)
+   {
+      return new PSMedia()
+      {
+         Id = dto.Id,
+         Title = dto.Title,
+         Path = dto.Path,
+         Size = dto.Size
+      };
+   }
 
    public PSLifeStory ToPsModel(LifeStoryDto dto)
    {

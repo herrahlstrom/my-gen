@@ -4,8 +4,8 @@ using System.Management.Automation;
 
 namespace MyGen.Cmdlets;
 
-[Cmdlet(VerbsCommon.Get, "MyGenLifeStory")]
-public class GetLifeStoryCommand : Cmdlet
+[Cmdlet(VerbsCommon.Get, "MyGenMedia")]
+public class GetMediaCommand : Cmdlet
 {
    [Parameter(Mandatory = true, ParameterSetName = "Id")]
    public Guid Id { get; set; } = Guid.Empty;
@@ -21,7 +21,7 @@ public class GetLifeStoryCommand : Cmdlet
 
       if (Id != Guid.Empty)
       {
-         var result = client.GetLifeStoryAsync(Id).GetAwaiter().GetResult();
+         var result = client.GetMediaAsync(Id).GetAwaiter().GetResult();
          if (result != null)
          {
             WriteObject(mapper.ToPsModel(result));
@@ -29,7 +29,7 @@ public class GetLifeStoryCommand : Cmdlet
       }
       else if (PersonId != Guid.Empty)
       {
-         var result = client.GetLifeStoriesOnPerson(PersonId).GetAwaiter().GetResult();
+         var result = client.GetMediaOnPerson(PersonId).GetAwaiter().GetResult();
          WriteObject(result.Select(mapper.ToPsModel), true);
       }
    }

@@ -44,6 +44,25 @@ app.MapGet("person/{id:guid}/lifestories", (CrudableRepository repository, Guid 
    return Results.Json(result);
 });
 
+app.MapGet("person/{id:guid}/media", (CrudableRepository repository, Guid id) =>
+{
+   if (!repository.TryGetEntity(id, out Person p))
+   {
+      return Results.NotFound();
+   }
+
+   List<MediaDto> result = new();
+   if (p.MediaIds is not null)
+   {
+      foreach (Guid mediaId in p.MediaIds)
+      {
+         var media = repository.GetEntity<Media>(mediaId);
+         result.Add(Mapper.ToDto(media));
+      }
+   }
+   return Results.Json(result);
+});
+
 
 app.Run();
 

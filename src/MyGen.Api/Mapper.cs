@@ -38,4 +38,15 @@ internal static class Mapper
          Notes = p.Notes
       };
    }
+
+   public static MediaDto ToDto(Media m)
+   {
+      return new MediaDto()
+      {
+         Id = m.Id,
+         Title = m.Title,
+         Path = m.Path,
+         Size = m.Size
+      };
+   }
 }

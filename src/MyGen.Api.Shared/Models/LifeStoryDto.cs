@@ -1,8 +1,11 @@
 ﻿namespace MyGen.Api.Shared.Models;
 
+#nullable disable
+
 public class LifeStoryDto
 {
    public Guid Id { get; set; }
+
    public string Name { get; set; }
    public string Date { get; set; }
    public string EndDate { get; set; }

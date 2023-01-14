@@ -1,6 +1,6 @@
 ﻿namespace MyGen.Api.Shared.Models;
 
-#pragma warning disable CS8618
+#nullable disable
 
 public class PersonDto
 {
