@@ -10,13 +10,23 @@ public class LifeStory : ICrudable
    public string? EndDate { get; set; }
    public string? Location { get; set; }
    public string Notes { get; set; } = "";
-   public required IList<Guid> SourceIds { get; init; }
+   public List<Guid>? SourceIds { get; set; }
    public LifeStoryType Type { get; set; }
    int ICrudable.Version => 1;
-    
+
    public override int GetHashCode()
    {
-      return HashCode.Combine(Id, Name, Date, EndDate, Location, Notes, SourceIds, Type);
+      return new
+      {
+         Id,
+         Name,
+         Date,
+         EndDate,
+         Location,
+         Notes,
+         SourceIds = CrudableRepository.GetHashCodeFromCollection(SourceIds),
+         Type
+      }.GetHashCode();
    }
 }
 

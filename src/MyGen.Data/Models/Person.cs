@@ -8,16 +8,27 @@ public class Person : ICrudable
    public required string Lastname { get; set; }
    public required string Sex { get; set; }
 
-   public string Profession { get; set; } = "";
-   public string Notes { get; set; } = "";
+   public string? Profession { get; set; }
+   public string? Notes { get; set; }
 
-   public ICollection<FamilyMember> Families { get; init; } = Array.Empty<FamilyMember>();
-   public ICollection<LifeStoryMember> LifeStories { get; init; } = Array.Empty<LifeStoryMember>();
-   public IList<Guid> MediaIds { get; init; } = Array.Empty<Guid>();
+   public List<FamilyMember>? Families { get; set; }
+   public List<LifeStoryMember>? LifeStories { get; set; }
+   public List<Guid>? MediaIds { get; set; }
 
    public override int GetHashCode()
    {
-      return new { Id, Firstname, Lastname, Sex, Profession, Notes, Families, LifeStories, MediaIds }.GetHashCode();
+      return new
+      {
+         Id,
+         Firstname,
+         Lastname,
+         Sex,
+         Profession,
+         Notes,
+         Families = CrudableRepository.GetHashCodeFromCollection(Families),
+         LifeStories = CrudableRepository.GetHashCodeFromCollection(LifeStories),
+         MediaIds = CrudableRepository.GetHashCodeFromCollection(MediaIds)
+      }.GetHashCode();
    }
 
    int ICrudable.Version => 1;
