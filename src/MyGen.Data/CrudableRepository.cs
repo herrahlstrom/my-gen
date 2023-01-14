@@ -78,6 +78,22 @@ public class CrudableRepository
       entity = default;
       return false;
    }
+
+   internal static int GetHashCodeFromCollection<T>(IEnumerable<T>? collection) where T : notnull
+   {
+      if (collection is null)
+      {
+         return 0;
+      }
+
+      int hc = 0;
+      foreach (var item in collection)
+      {
+         hc ^= item.GetHashCode();
+         hc = (hc << 7) | (hc >> (32 - 7)); //rotale hc to the left to swipe over all bits
+      }
+      return hc;
+   }
    private static string GetEntityName(ICrudable entity) => $"{entity.GetType().Name}-{entity.Id}.json";
 
    private EntityState GetState<T>(T entity) where T : ICrudable
