@@ -17,9 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Operations", "src\MyG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Api", "src\MyGen.Api\MyGen.Api.csproj", "{70B39214-B5D7-43E2-ACE7-089CA1D78298}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGen.Api.Shared", "src\MyGen.Api.Shared\MyGen.Api.Shared.csproj", "{B9E872DA-4C61-4A98-87BA-32690295AA7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Api.Shared", "src\MyGen.Api.Shared\MyGen.Api.Shared.csproj", "{B9E872DA-4C61-4A98-87BA-32690295AA7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGen.Api.Client", "src\MyGen.Api.Client\MyGen.Api.Client.csproj", "{DB1BD15A-04E8-42C6-8BDD-9B9896D1C3FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Api.Client", "src\MyGen.Api.Client\MyGen.Api.Client.csproj", "{DB1BD15A-04E8-42C6-8BDD-9B9896D1C3FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGen.Wpf", "src\MyGen.Wpf\MyGen.Wpf.csproj", "{6E45105D-1256-48A3-A170-C23749934409}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{DB1BD15A-04E8-42C6-8BDD-9B9896D1C3FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB1BD15A-04E8-42C6-8BDD-9B9896D1C3FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB1BD15A-04E8-42C6-8BDD-9B9896D1C3FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E45105D-1256-48A3-A170-C23749934409}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E45105D-1256-48A3-A170-C23749934409}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E45105D-1256-48A3-A170-C23749934409}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E45105D-1256-48A3-A170-C23749934409}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
