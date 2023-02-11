@@ -21,7 +21,7 @@ public class GetLifeStoryCommandTest
    public void Initialize()
    {
       _clientMock = new Mock<IApiClient>();
-      _services = new Services(sc =>
+      _services = new Services((sc, config) =>
       {
          sc.AddTransient<IApiClient>(_ => _clientMock.Object);
       });

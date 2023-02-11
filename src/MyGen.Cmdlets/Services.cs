@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using MyGen.Api.Client;
 using Refit;
 
@@ -14,10 +15,12 @@ internal class Services : IServiceProvider, IDisposable
       Instance = new();
    }
 
-   public Services(Action<ServiceCollection> scBuilder)
+   public Services(Action<ServiceCollection, IConfiguration> scBuilder)
    {
+      IConfigurationRoot configuration = GetConfiguration();
+
       var sc = new ServiceCollection();
-      scBuilder.Invoke(sc);
+      scBuilder.Invoke(sc, configuration);
       _serviceProvider = sc.BuildServiceProvider();
 
       _serviceProviders.Add(_serviceProvider);
@@ -48,11 +51,24 @@ internal class Services : IServiceProvider, IDisposable
       return default;
    }
 
-   private static void CreateDefaultServiceCollection(ServiceCollection sc)
+   private static void CreateDefaultServiceCollection(ServiceCollection sc, IConfiguration configuration)
    {
+      const string baseAddressPath = "Clients:ApiClient:BaseAddress";
+      string baseAddress = configuration[baseAddressPath]
+         ?? throw new InvalidOperationException($"Configuration has no base address for API client ({baseAddressPath})");
+
       sc.AddRefitClient<IApiClient>()
-         .ConfigureHttpClient(client => client.BaseAddress = new Uri("http://localhost:5022"));
+         .ConfigureHttpClient(client => client.BaseAddress = new Uri(baseAddress));
 
       sc.AddTransient<Mapper>();
+   }
+
+   private static IConfigurationRoot GetConfiguration()
+   {
+      return new ConfigurationBuilder()
+         .SetBasePath(Directory.GetCurrentDirectory())
+         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+         .AddJsonFile($"appsettings.{Environment.MachineName}.json", optional: true)
+         .Build();
    }
 }
