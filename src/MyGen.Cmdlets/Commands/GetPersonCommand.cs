@@ -4,13 +4,16 @@ using System.Management.Automation;
 
 namespace MyGen.Cmdlets;
 
-[Cmdlet(VerbsCommon.Get, "MyGenPerson")]
+[Cmdlet(VerbsCommon.Get, "MyGenPerson", DefaultParameterSetName = FilterSetName)]
 public class GetPersonCommand : Cmdlet
 {
-   [Parameter]
-   public string Filter { get; set; } = "";
+   private const string FilterSetName = "Filter";
+   private const string IdSetName = "Id";
 
-   [Parameter]
+   [Parameter(Mandatory = true, ParameterSetName = FilterSetName)]
+   public string Filter { get; set; } = "";
+   
+   [Parameter(Mandatory = true, ParameterSetName = IdSetName)]
    public Guid Id { get; set; } = Guid.Empty;
 
    protected override void ProcessRecord()
