@@ -1,4 +1,5 @@
-﻿using MyGen.Wpf.Infrastructure;
+﻿using MyGen.Shared;
+using MyGen.Wpf.Infrastructure;
 using MyGen.Wpf.Shared;
 using System;
 using System.Threading.Tasks;
@@ -16,12 +17,12 @@ internal class PersonViewModel : IViewModel<PersonUserControl>
       _repository = repository;
    }
 
-   public string FullName { get; set; } = "";
+   public string FullName => Name.FirstName + " " + Name.LastName;
    public Guid Id { get; private set; }
    object IViewModel.Id => Id;
-   public string ShortName { get; set; } = "";
+   public PersonName Name { get; set; } = PersonName.Empty;
+   string IViewModel.Title => Name.GivenName + " " + Name.LastName;
 
-   string IViewModel.Title => ShortName;
    public PersonUserControl CreateView()
    {
       var view = _viewFactory.Create();

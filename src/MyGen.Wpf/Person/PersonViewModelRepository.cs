@@ -7,8 +7,7 @@ internal class PersonViewModelRepository : IViewModelRepository<PersonViewModel>
 {
    public Task LoadModelAsync(PersonViewModel viewModel)
    {
-      viewModel.ShortName = "Martin Ahlström";
-      viewModel.FullName = "Ove Martin Sebastian Ahlström";
+      viewModel.Name = new("Ove Martin* Sebastian", "Ahlström");
 
       return Task.CompletedTask;
    }
