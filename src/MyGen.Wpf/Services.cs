@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyGen.Wpf.Infrastructure;
+using Microsoft.Extensions.Logging;
+using MyGen.Data;
+using MyGen.Wpf.Options;
 using MyGen.Wpf.Shared;
+using MyGen.Wpf.Tools;
 using System;
 using System.IO;
 using System.Windows.Controls;
@@ -21,10 +24,6 @@ internal static class ServiceProviderExtensions
 
       // View Model Repository
       sc.AddSingleton<IViewModelRepository<TModel>, TRepository>();
-
-      // View and Factory
-      sc.AddTransient<TView>();
-      sc.AddTransient<IFactory<TView>>(sp => new SimpleFactory<TView>(() => sp.GetRequiredService<TView>()));
 
       return sc;
    }
@@ -64,7 +63,18 @@ internal class Services : IServiceProvider, IDisposable
 
    private static void CreateDefaultServiceCollection(ServiceCollection sc, IConfiguration configuration)
    {
+      sc.AddSingleton<AppState>();
+
+      sc.Configure<DataOptions>((options) => configuration.GetSection("Data").Bind(options));
+      sc.AddSingleton<IFileSystem, Tools.FileSystem>();
+      sc.AddSingleton<MyGen.Data.CrudableRepository>();
+
+      sc.AddLogging(configure => configure
+         .AddConfiguration(configuration.GetRequiredSection("Logging"))
+         .AddDebug());
+
       sc.RegisterViewAndModel<Main.MainWindow, Main.MainViewModel, Main.MainViewModelRepository>();
+      sc.RegisterViewAndModel<Main.SearchUserControl, Main.SearchViewModel, Main.SearchViewModelRepository>();
       sc.RegisterViewAndModel<Person.PersonUserControl, Person.PersonViewModel, Person.PersonViewModelRepository>();
 
       sc.AddSingleton<ViewModelFactory>();
@@ -76,6 +86,7 @@ internal class Services : IServiceProvider, IDisposable
          .SetBasePath(Directory.GetCurrentDirectory())
          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
          .AddJsonFile($"appsettings.{Environment.MachineName}.json", optional: true)
+         .AddUserSecrets<Services>(optional: false)
          .Build();
    }
 }

@@ -1,35 +1,28 @@
 ﻿using MyGen.Shared;
-using MyGen.Wpf.Infrastructure;
 using MyGen.Wpf.Shared;
 using System;
 using System.Threading.Tasks;
 
 namespace MyGen.Wpf.Person;
 
-internal class PersonViewModel : IViewModel<PersonUserControl>
+internal class PersonViewModel : IViewModel<PersonUserControl>, IMainTabViewModel
 {
    private readonly IViewModelRepository<PersonViewModel> _repository;
-   private IFactory<PersonUserControl> _viewFactory;
 
-   public PersonViewModel(IFactory<PersonUserControl> viewFactory, IViewModelRepository<PersonViewModel> repository)
+   public PersonViewModel(IViewModelRepository<PersonViewModel> repository)
    {
-      _viewFactory = viewFactory;
       _repository = repository;
    }
 
    public string FullName => Name.FirstName + " " + Name.LastName;
    public Guid Id { get; private set; }
-   object IViewModel.Id => Id;
+   object IMainTabViewModel.Id => Id;
    public PersonName Name { get; set; } = PersonName.Empty;
-   string IViewModel.Title => Name.GivenName + " " + Name.LastName;
+   string IMainTabViewModel.Title => Name.GivenName + " " + Name.LastName;
 
-   public PersonUserControl CreateView()
-   {
-      var view = _viewFactory.Create();
-      view.DataContext = this;
-      return view;
-   }
-
+   public string Notes { get; set; } = "";
+   public string Profession { get; set; } = "";
+   public Sex Sex { get; set; } = Sex.Unknown;
    public async Task LoadAsync(object? argument = null)
    {
       if (argument is not Guid id)

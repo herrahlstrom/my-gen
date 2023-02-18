@@ -1,6 +1,6 @@
-﻿using MyGen.Wpf.Infrastructure;
-using MyGen.Wpf.Person;
+﻿using MyGen.Wpf.Person;
 using MyGen.Wpf.Shared;
+using MyGen.Wpf.Tools;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -10,22 +10,31 @@ namespace MyGen.Wpf.Main;
 
 internal class MainViewModel : ViewModelBase, IViewModel<MainWindow>
 {
-   private readonly IFactory<MainWindow> _viewFactory;
    private readonly ViewModelFactory _vmFactory;
 
-   private IViewModel? _selectedTab = null;
+   private IMainTabViewModel? _selectedTab = null;
 
-   public MainViewModel(IFactory<MainWindow> viewFactory, ViewModelFactory vmFactory)
+   public MainViewModel(ViewModelFactory vmFactory, AppState appState)
    {
-      _viewFactory = viewFactory;
       _vmFactory = vmFactory;
+
+      Search = _vmFactory.CreateViewModelFor<SearchUserControl>();
+
+      appState.OpenPerson.SetRequestCallback(async id =>
+      {
+         if (_vmFactory.CreateViewModelFor<PersonUserControl>() is IMainTabViewModel viewModel)
+         {
+            await viewModel.LoadAsync(id);
+            Open(viewModel);
+         }
+      });
    }
 
-   object IViewModel.Id => Guid.Empty;
+   public ObservableCollection<IMainTabViewModel> OpenTabs { get; } = new();
 
-   public ObservableCollection<IViewModel> OpenTabs { get; } = new();
+   public IViewModel<SearchUserControl> Search { get; }
 
-   public IViewModel? SelectedTab
+   public IMainTabViewModel? SelectedTab
    {
       get => _selectedTab;
       set
@@ -37,22 +46,12 @@ internal class MainViewModel : ViewModelBase, IViewModel<MainWindow>
 
    public string Title => "My Gen";
 
-   public MainWindow CreateView()
-   {
-      var view = _viewFactory.Create();
-      view.DataContext = this;
-      return view;
-   }
-
    public async Task LoadAsync(object? _)
    {
-      IViewModel<PersonUserControl> pVm = _vmFactory.CreateViewModelFor<PersonUserControl>();
-      await pVm.LoadAsync(Guid.Empty);
-
-      Open(pVm);
+      await Search.LoadAsync();
    }
 
-   public void Open<TModel>(TModel model) where TModel : IViewModel
+   public void Open<TModel>(TModel model) where TModel : IMainTabViewModel
    {
       if (OpenTabs.OfType<TModel>().FirstOrDefault(x => x.Id.Equals(model.Id)) is { } existing)
       {

@@ -40,7 +40,11 @@ public partial class App : Application, IDisposable
 
       mainVm.LoadAsync();
 
-      MainWindow = mainVm.CreateView();
+      MainWindow = new MainWindow()
+      {
+         DataContext = mainVm
+      };
+
       MainWindow.Show();
    }
 }

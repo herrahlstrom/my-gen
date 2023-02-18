@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="MyGen.Wpf.Main.SearchUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MyGen.Wpf.Main"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="300"
+        d:DataContext="{d:DesignInstance Type=local:SearchViewModel, IsDesignTimeCreatable=False}">
+    <Grid>
+      <Grid.RowDefinitions>
+         <RowDefinition Height="auto"/>
+         <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+
+      <TextBox Grid.Row="0" Margin="0,0,0,5" Padding="5" Text="{Binding Filter, UpdateSourceTrigger=PropertyChanged}" />
+
+      <ListBox Grid.Row="1" ItemsSource="{Binding ResultView}">
+         <ListBox.ItemTemplate>
+            <DataTemplate DataType="{x:Type local:PersonSearchResult}">
+               <StackPanel Orientation="Horizontal">
+                  <StackPanel.InputBindings>
+                     <MouseBinding MouseAction="LeftDoubleClick"
+                                  Command="{Binding DataContext.OpenPersonCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                  CommandParameter="{Binding Id}" />
+                  </StackPanel.InputBindings>
+                  <TextBlock Text="{Binding DisplayName}" />
+               </StackPanel>
+            </DataTemplate>
+         </ListBox.ItemTemplate>
+         <ListBox.GroupStyle>
+            <GroupStyle>
+               <GroupStyle.HeaderTemplate>
+                  <DataTemplate>
+                     <TextBlock FontWeight="Bold" Text="{Binding Name}" Foreground="#FF999999" Margin="5,10,0,3" />
+                  </DataTemplate>
+               </GroupStyle.HeaderTemplate>
+            </GroupStyle>
+         </ListBox.GroupStyle>
+      </ListBox>
+       
+   </Grid>
+</UserControl>

@@ -4,12 +4,17 @@ using System.Windows;
 using System.Windows.Controls;
 using MyGen.Wpf.Shared;
 
-namespace MyGen.Wpf.Main;
+namespace MyGen.Wpf.Shared;
 
-internal class OpenTabTemplateSelector : DataTemplateSelector
+internal class ViewTemplateSelector : DataTemplateSelector
 {
    public override DataTemplate SelectTemplate(object item, DependencyObject container)
    {
+      if(item is null)
+      {
+         return null;
+      }
+
       var uiType = (from type in item.GetType().GetInterfaces()
                     where type.IsGenericType
                     where type.GetGenericTypeDefinition() == typeof(IViewModel<>)

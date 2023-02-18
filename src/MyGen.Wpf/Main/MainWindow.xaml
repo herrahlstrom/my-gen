@@ -10,19 +10,23 @@
         d:DataContext="{d:DesignInstance Type=local:MainViewModel, IsDesignTimeCreatable=False}">
 
    <Window.Resources>
-      <local:OpenTabTemplateSelector x:Key="openTabTemplateSelector" />
+      <shared:ViewTemplateSelector x:Key="templateSelector" />
    </Window.Resources>
 
    <Grid>
       <Grid.ColumnDefinitions>
-         <ColumnDefinition Width="171*" />
-         <ColumnDefinition Width="629*" />
+         <ColumnDefinition Width="220" />
+         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
 
-      <TabControl Grid.Column="1" TabStripPlacement="Left"
+      <ContentControl Grid.Column="0" Margin="5"
+                      Content="{Binding Search}"
+                      ContentTemplateSelector="{StaticResource templateSelector}" />
+
+      <TabControl Grid.Column="1" TabStripPlacement="Left" Margin="5"
                   ItemsSource="{Binding OpenTabs}"
                   SelectedItem="{Binding SelectedTab}"
-                  ContentTemplateSelector="{StaticResource openTabTemplateSelector}">
+                  ContentTemplateSelector="{StaticResource templateSelector}">
 
          <TabControl.ItemContainerStyle>
             <Style TargetType="TabItem">
@@ -30,7 +34,7 @@
                   <Setter.Value>
                      <DataTemplate DataType="{x:Type shared:IViewModel}">
                         <StackPanel Orientation="Horizontal" Margin="3">
-                           <TextBlock Text="{Binding Path=(shared:IViewModel.Title)}" />
+                           <TextBlock Text="{Binding Path=(shared:IMainTabViewModel.Title)}" />
                         </StackPanel>
                      </DataTemplate>
                   </Setter.Value>
