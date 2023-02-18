@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6284BB99
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Cmdlet.Test", "tests\MyGen.Cmdlet.Test\MyGen.Cmdlet.Test.csproj", "{49387240-D880-406A-B082-B2ECE89055D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Operations", "src\MyGen.Operations\MyGen.Operations.csproj", "{9C9C2F7A-0713-4455-8E80-0C5BEBE4082F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Api", "src\MyGen.Api\MyGen.Api.csproj", "{70B39214-B5D7-43E2-ACE7-089CA1D78298}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Api.Shared", "src\MyGen.Api.Shared\MyGen.Api.Shared.csproj", "{B9E872DA-4C61-4A98-87BA-32690295AA7D}"
@@ -23,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Api.Client", "src\MyG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Wpf", "src\MyGen.Wpf\MyGen.Wpf.csproj", "{6E45105D-1256-48A3-A170-C23749934409}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGen.Shared", "src\MyGen.Shared\MyGen.Shared.csproj", "{E28DC3B8-8273-4C67-B14D-9C486F7F6BCE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Shared", "src\MyGen.Shared\MyGen.Shared.csproj", "{E28DC3B8-8273-4C67-B14D-9C486F7F6BCE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGen.Shared.Test", "tests\MyGen.Shared.Test\MyGen.Shared.Test.csproj", "{6C567874-5C3C-42EA-B152-1960A08E27D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGen.Shared.Test", "tests\MyGen.Shared.Test\MyGen.Shared.Test.csproj", "{6C567874-5C3C-42EA-B152-1960A08E27D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +47,6 @@ Global
 		{49387240-D880-406A-B082-B2ECE89055D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49387240-D880-406A-B082-B2ECE89055D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49387240-D880-406A-B082-B2ECE89055D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9C9C2F7A-0713-4455-8E80-0C5BEBE4082F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C9C2F7A-0713-4455-8E80-0C5BEBE4082F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C9C2F7A-0713-4455-8E80-0C5BEBE4082F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C9C2F7A-0713-4455-8E80-0C5BEBE4082F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{70B39214-B5D7-43E2-ACE7-089CA1D78298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{70B39214-B5D7-43E2-ACE7-089CA1D78298}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70B39214-B5D7-43E2-ACE7-089CA1D78298}.Release|Any CPU.ActiveCfg = Release|Any CPU
