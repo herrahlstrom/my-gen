@@ -14,12 +14,12 @@ public class FileSystem : IFileSystem
       File.Delete(Path.Combine(_pwd, filename));
    }
 
-   public IEnumerable<string> GetFiles()
+   public ICollection<string> GetFiles()
    {
       return Directory.GetFiles(_pwd);
    }
 
-   public IEnumerable<string> GetFiles(string extension)
+   public ICollection<string> GetFiles(string extension)
    {
       return Directory.GetFiles(_pwd, $"*{extension}");
    }

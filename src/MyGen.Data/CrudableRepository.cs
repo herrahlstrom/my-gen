@@ -1,4 +1,6 @@
-﻿using System.Collections.Concurrent;
+﻿using Microsoft.Extensions.Logging;
+using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace MyGen.Data;
@@ -8,13 +10,14 @@ public class CrudableRepository
    private readonly ConcurrentBag<Guid> _deletedItems = new();
    private readonly ConcurrentDictionary<Guid, ICrudable> _entities = new();
    private readonly IFileSystem _fileSystem;
+   private readonly ILogger<CrudableRepository> _logger;
    private readonly MyGenSerializer _serializer;
    private readonly ConcurrentDictionary<Guid, int> _tracker = new();
-
-   public CrudableRepository(IFileSystem fileSystem)
+   public CrudableRepository(IFileSystem fileSystem, ILogger<CrudableRepository> logger)
    {
       _serializer = new MyGenSerializer();
       _fileSystem = fileSystem;
+      _logger = logger;
    }
 
    private enum EntityState
@@ -25,6 +28,7 @@ public class CrudableRepository
       Deleted
    }
 
+   public bool IsLoaded { get; private set; }
    public void AddEntity<T>(T entity) where T : ICrudable
    {
       _entities.TryAdd(entity.Id, entity);
@@ -47,11 +51,24 @@ public class CrudableRepository
 
    public void Load()
    {
+      if (IsLoaded)
+      {
+         _logger.LogTrace("Skip loading, already loaded.");
+         return;
+      }
+
+      var timestamp = Stopwatch.GetTimestamp();
+
       var files = _fileSystem.GetFiles(".json");
       Parallel.ForEach(files, new ParallelOptions()
       {
          MaxDegreeOfParallelism = 7
       }, LoadFromFile);
+
+      IsLoaded = true;
+
+      var elapsed = Stopwatch.GetElapsedTime(timestamp);
+      _logger.LogInformation("{0} files loaded in {1:N2} seconds", files.Count, elapsed.TotalSeconds);
    }
 
    public void RemoveEntity<T>(T entity) where T : ICrudable

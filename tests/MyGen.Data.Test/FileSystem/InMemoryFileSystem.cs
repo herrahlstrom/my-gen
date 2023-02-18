@@ -47,14 +47,14 @@ internal class InMemoryFileSystem : FakeFileSystem, IFakeFileSystem
       return _files.TryGetValue(filePath, out var entry) && entry is FileEntry;
    }
 
-   public IEnumerable<string> GetFiles()
+   public ICollection<string> GetFiles()
    {
-      return _files.Values.Select(x => x.Name);
+      return _files.Values.Select(x => x.Name).ToList();
    }
 
-   public IEnumerable<string> GetFiles(string extension)
+   public ICollection<string> GetFiles(string extension)
    {
-      return GetFiles().Where(x => x.EndsWith(extension, StringComparison.OrdinalIgnoreCase));
+      return GetFiles().Where(x => x.EndsWith(extension, StringComparison.OrdinalIgnoreCase)).ToList();
    }
 
    public Stream OpenForRead(string path)

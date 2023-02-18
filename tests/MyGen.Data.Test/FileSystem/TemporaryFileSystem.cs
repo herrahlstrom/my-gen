@@ -29,13 +29,13 @@ internal class TemporaryFileSystem : FakeFileSystem, IFakeFileSystem, IDisposabl
       Directory.Delete(_directory);
    }
 
-   public IEnumerable<string> GetFiles()
+   public ICollection<string> GetFiles()
    {
-      return _files.Select(f => Path.Combine(_directory, f));
+      return _files.Select(f => Path.Combine(_directory, f)).ToList();
    }
-   public IEnumerable<string> GetFiles(string extension)
+   public ICollection<string> GetFiles(string extension)
    {
-      return GetFiles().Where(x => x.EndsWith(extension, StringComparison.OrdinalIgnoreCase));
+      return GetFiles().Where(x => x.EndsWith(extension, StringComparison.OrdinalIgnoreCase)).ToList();
    }
 
    public Stream OpenForRead(string filename)

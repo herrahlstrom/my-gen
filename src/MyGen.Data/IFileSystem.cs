@@ -8,6 +8,6 @@ public interface IFileSystem
 
    void DeleteFile(string filename);
    
-   IEnumerable<string> GetFiles();
-   IEnumerable<string> GetFiles(string extension);
+   ICollection<string> GetFiles();
+   ICollection<string> GetFiles(string extension);
 }
