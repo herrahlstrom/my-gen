@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using Microsoft.Extensions.Logging.Abstractions;
 using MyGen.Data.Models;
 using MyGen.Data.Test.FileSystem;
 
@@ -86,7 +87,7 @@ public class RepositoryTest
    public void Initialize()
    {
       _fileSystem = new InMemoryFileSystem();
-      _repository = new CrudableRepository(_fileSystem);
+      _repository = new CrudableRepository(_fileSystem, new NullLogger<CrudableRepository>());
    }
 
    private Person GetPerson()
