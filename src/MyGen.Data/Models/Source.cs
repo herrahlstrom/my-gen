@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace MyGen.Data.Models;
 
@@ -34,18 +33,4 @@ public class Source : ICrudable
             MediaIds = CrudableRepository.GetHashCodeFromCollection(MediaIds)
         }.GetHashCode();
     }
-}
-
-public enum SourceType
-{
-    None = 0,
-
-    [Display(Name = "Annan källa")]
-    Other = 1,
-
-    [Display(Name = "Riksarkivet")]
-    Riksarkivet = 2,
-
-    [Display(Name = "Arkiv Digital")]
-    ArkivDigital = 3
 }

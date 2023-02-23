@@ -11,9 +11,9 @@ public class Person : ICrudable
    public string? Profession { get; set; }
    public string? Notes { get; set; }
 
-   public List<FamilyMember>? Families { get; set; }
-   public List<LifeStoryMember>? LifeStories { get; set; }
-   public List<Guid>? MediaIds { get; set; }
+   public IList<FamilyMember> Families { get; set; }
+   public IList<LifeStoryMember> LifeStories { get; set; }
+   public IList<Guid> MediaIds { get; set; }
 
    public override int GetHashCode()
    {

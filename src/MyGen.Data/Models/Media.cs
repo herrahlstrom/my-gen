@@ -44,10 +44,3 @@ public class MediaMeta
    public string Key { get; set; }
    public string Value { get; set; }
 }
-
-public enum MediaType
-{
-   Unknown = 0,
-   Potrait = 1,
-   Source = 2
-}
