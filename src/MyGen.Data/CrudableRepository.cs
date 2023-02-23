@@ -13,6 +13,7 @@ public class CrudableRepository
    private readonly ILogger<CrudableRepository> _logger;
    private readonly MyGenSerializer _serializer;
    private readonly ConcurrentDictionary<Guid, int> _tracker = new();
+
    public CrudableRepository(IFileSystem fileSystem, ILogger<CrudableRepository> logger)
    {
       _serializer = new MyGenSerializer();
@@ -29,25 +30,21 @@ public class CrudableRepository
    }
 
    public bool IsLoaded { get; private set; }
+
    public void AddEntity<T>(T entity) where T : ICrudable
    {
       _entities.TryAdd(entity.Id, entity);
    }
 
-   public IEnumerable<T> GetEntities<T>() where T : ICrudable
-   {
-      return _entities.Values.OfType<T>();
-   }
+   public Models.Family GetFamily(Guid id) => GetEntity<Models.Family>(id);
 
-   public T GetEntity<T>(Guid id) where T : ICrudable
-   {
-      if (_entities.TryGetValue(id, out var entity) && entity is T item)
-      {
-         return item;
-      }
+   public Models.LifeStory GetLifeStory(Guid id) => GetEntity<Models.LifeStory>(id);
 
-      throw new ArgumentException($"Can't find person with id {id}");
-   }
+   public Models.Media GetMedia(Guid id) => GetEntity<Models.Media>(id);
+
+   public Models.Person GetPerson(Guid id) => GetEntity<Models.Person>(id);
+
+   public IEnumerable<Models.Person> GetPersons() => GetEntities<Models.Person>();
 
    public void Load()
    {
@@ -111,7 +108,23 @@ public class CrudableRepository
       }
       return hc;
    }
+
    private static string GetEntityName(ICrudable entity) => $"{entity.GetType().Name}-{entity.Id}.json";
+
+   private IEnumerable<T> GetEntities<T>() where T : ICrudable
+   {
+      return _entities.Values.OfType<T>();
+   }
+
+   private T GetEntity<T>(Guid id) where T : ICrudable
+   {
+      if (_entities.TryGetValue(id, out var entity) && entity is T item)
+      {
+         return item;
+      }
+
+      throw new ArgumentException($"Can't find person with id {id}");
+   }
 
    private EntityState GetState<T>(T entity) where T : ICrudable
    {

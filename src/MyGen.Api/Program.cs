@@ -23,7 +23,7 @@ app.MapGet("lifestory/{id:guid}", (CrudableRepository repository, Guid id) =>
       : Results.NotFound());
 
 app.MapGet("person/find", (CrudableRepository repository, string filter) =>
-   repository.GetEntities<Person>().Where(x => Match(x, filter)).Select(Mapper.ToDto));
+   repository.GetPersons().Where(x => Match(x, filter)).Select(Mapper.ToDto));
 
 app.MapGet("person/{id:guid}/lifestories", (CrudableRepository repository, Guid id) =>
 {
@@ -37,7 +37,7 @@ app.MapGet("person/{id:guid}/lifestories", (CrudableRepository repository, Guid 
    {
       foreach (var ls in p.LifeStories)
       {
-         var lifeStory = repository.GetEntity<LifeStory>(ls.LifeStoryId);
+         var lifeStory = repository.GetLifeStory(ls.LifeStoryId);
          result.Add(Mapper.ToDto(lifeStory, ls));
       }
    }
@@ -56,7 +56,7 @@ app.MapGet("person/{id:guid}/media", (CrudableRepository repository, Guid id) =>
    {
       foreach (Guid mediaId in p.MediaIds)
       {
-         var media = repository.GetEntity<Media>(mediaId);
+         var media = repository.GetMedia(mediaId);
          result.Add(Mapper.ToDto(media));
       }
    }
