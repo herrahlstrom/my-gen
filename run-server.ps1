@@ -1,1 +1,0 @@
-dotnet run -c Release --project src\MyGen.Api\MyGen.Api.csproj
