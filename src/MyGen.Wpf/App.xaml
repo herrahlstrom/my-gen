@@ -2,17 +2,5 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
    <Application.Resources>
-      <ResourceDictionary>
-         <Style TargetType="TextBlock" x:Key="HiddenIfEmpty">
-            <Style.Triggers>
-               <Trigger Property="Text" Value="{x:Null}">
-                  <Setter Property="Visibility" Value="Collapsed" />
-               </Trigger>
-               <Trigger Property="Text" Value="">
-                  <Setter Property="Visibility" Value="Collapsed" />
-               </Trigger>
-            </Style.Triggers>
-         </Style>
-      </ResourceDictionary>
    </Application.Resources>
 </Application>

@@ -19,7 +19,7 @@ internal class SearchViewModelRepository : IViewModelRepository<SearchViewModel>
       await Task.Run(_crudableRepository.Load);
 
       List<SearchResult> result = new();
-      foreach (var item in _crudableRepository.GetEntities<Data.Models.Person>())
+      foreach (var item in _crudableRepository.GetPersons())
       {
          MyGen.Shared.PersonName name = new(item.Firstname, item.Lastname);
          result.Add(new PersonSearchResult(item.Id, name));
