@@ -1,4 +1,4 @@
-﻿using MyGen.Data.Models;
+﻿using MyGen.Data.Entities;
 using System.IO;
 using System.Text;
 using System.Text.Json;

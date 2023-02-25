@@ -1,20 +1,20 @@
 ﻿using Microsoft.Extensions.Logging;
+using MyGen.Data.Entities;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 namespace MyGen.Data;
 
-public class CrudableRepository
+public class EntityRepository : IEntityRepository
 {
    private readonly ConcurrentBag<Guid> _deletedItems = new();
    private readonly ConcurrentDictionary<Guid, ICrudable> _entities = new();
    private readonly IFileSystem _fileSystem;
-   private readonly ILogger<CrudableRepository> _logger;
+   private readonly ILogger<EntityRepository> _logger;
    private readonly MyGenSerializer _serializer;
    private readonly ConcurrentDictionary<Guid, int> _tracker = new();
 
-   public CrudableRepository(IFileSystem fileSystem, ILogger<CrudableRepository> logger)
+   public EntityRepository(IFileSystem fileSystem, ILogger<EntityRepository> logger)
    {
       _serializer = new MyGenSerializer();
       _fileSystem = fileSystem;
@@ -36,15 +36,20 @@ public class CrudableRepository
       _entities.TryAdd(entity.Id, entity);
    }
 
-   public Models.Family GetFamily(Guid id) => GetEntity<Models.Family>(id);
+   public IEnumerable<T> GetEntities<T>() where T : ICrudable
+   {
+      return _entities.Values.OfType<T>();
+   }
 
-   public Models.LifeStory GetLifeStory(Guid id) => GetEntity<Models.LifeStory>(id);
+   public T GetEntity<T>(Guid id) where T : ICrudable
+   {
+      if (_entities.TryGetValue(id, out var entity) && entity is T item)
+      {
+         return item;
+      }
 
-   public Models.Media GetMedia(Guid id) => GetEntity<Models.Media>(id);
-
-   public Models.Person GetPerson(Guid id) => GetEntity<Models.Person>(id);
-
-   public IEnumerable<Models.Person> GetPersons() => GetEntities<Models.Person>();
+      throw new ArgumentException($"Can't find entity with id {id} of type {typeof(T)}");
+   }
 
    public void Load()
    {
@@ -81,18 +86,6 @@ public class CrudableRepository
       }, SaveEntity);
    }
 
-   public bool TryGetEntity<T>(Guid id, [MaybeNullWhen(false)] out T entity) where T : ICrudable
-   {
-      if (_entities.TryGetValue(id, out var crudable) && crudable is T item)
-      {
-         entity = item;
-         return true;
-      }
-
-      entity = default;
-      return false;
-   }
-
    internal static int GetHashCodeFromCollection<T>(IEnumerable<T>? collection) where T : notnull
    {
       if (collection is null)
@@ -110,21 +103,6 @@ public class CrudableRepository
    }
 
    private static string GetEntityName(ICrudable entity) => $"{entity.GetType().Name}-{entity.Id}.json";
-
-   private IEnumerable<T> GetEntities<T>() where T : ICrudable
-   {
-      return _entities.Values.OfType<T>();
-   }
-
-   private T GetEntity<T>(Guid id) where T : ICrudable
-   {
-      if (_entities.TryGetValue(id, out var entity) && entity is T item)
-      {
-         return item;
-      }
-
-      throw new ArgumentException($"Can't find person with id {id}");
-   }
 
    private EntityState GetState<T>(T entity) where T : ICrudable
    {

@@ -1,4 +1,4 @@
-﻿namespace MyGen.Data.Models;
+﻿namespace MyGen.Shared.Definitions;
 
 public enum MediaType
 {

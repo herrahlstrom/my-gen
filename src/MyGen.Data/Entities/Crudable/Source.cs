@@ -1,6 +1,7 @@
-﻿using System.Diagnostics;
+﻿using MyGen.Shared.Definitions;
+using System.Diagnostics;
 
-namespace MyGen.Data.Models;
+namespace MyGen.Data.Entities;
 
 [DebuggerDisplay("{Id} | {ReferenceId} | {Name} | {Url}")]
 public class Source : ICrudable
@@ -30,7 +31,7 @@ public class Source : ICrudable
             ReferenceId,
             Notes,
             Type,
-            MediaIds = CrudableRepository.GetHashCodeFromCollection(MediaIds)
+            MediaIds = EntityRepository.GetHashCodeFromCollection(MediaIds)
         }.GetHashCode();
     }
 }

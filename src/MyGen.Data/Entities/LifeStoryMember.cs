@@ -1,4 +1,6 @@
-﻿namespace MyGen.Data.Models;
+﻿using MyGen.Shared.Definitions;
+
+namespace MyGen.Data.Entities;
 
 public class LifeStoryMember
 {
@@ -14,8 +16,10 @@ public class LifeStoryMember
 
    public Guid LifeStoryId { get; set; }
 
+   public LifeStoryType Type { get; set; }
+
    public override int GetHashCode()
    {
-      return HashCode.Combine(LifeStoryId, Date, EndDate);
+      return HashCode.Combine(LifeStoryId, Date, EndDate, Type);
    }
 }

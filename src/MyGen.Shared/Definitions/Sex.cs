@@ -1,4 +1,4 @@
-﻿namespace MyGen.Shared;
+﻿namespace MyGen.Shared.Definitions;
 
 public enum Sex
 {

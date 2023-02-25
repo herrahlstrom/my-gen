@@ -1,4 +1,4 @@
-﻿namespace MyGen.Data.Models;
+﻿namespace MyGen.Data.Entities;
 
 public class Person : ICrudable
 {
@@ -11,9 +11,9 @@ public class Person : ICrudable
    public string? Profession { get; set; }
    public string? Notes { get; set; }
 
-   public IList<FamilyMember> Families { get; set; }
-   public IList<LifeStoryMember> LifeStories { get; set; }
-   public IList<Guid> MediaIds { get; set; }
+   public IList<FamilyMember>? Families { get; set; }
+   public IList<LifeStoryMember>? LifeStories { get; set; }
+   public IList<Guid>? MediaIds { get; set; }
 
    public override int GetHashCode()
    {
@@ -25,9 +25,9 @@ public class Person : ICrudable
          Sex,
          Profession,
          Notes,
-         Families = CrudableRepository.GetHashCodeFromCollection(Families),
-         LifeStories = CrudableRepository.GetHashCodeFromCollection(LifeStories),
-         MediaIds = CrudableRepository.GetHashCodeFromCollection(MediaIds)
+         Families = EntityRepository.GetHashCodeFromCollection(Families),
+         LifeStories = EntityRepository.GetHashCodeFromCollection(LifeStories),
+         MediaIds = EntityRepository.GetHashCodeFromCollection(MediaIds)
       }.GetHashCode();
    }
 

@@ -1,4 +1,6 @@
-﻿namespace MyGen.Data.Models;
+﻿using MyGen.Shared.Definitions;
+
+namespace MyGen.Data.Entities;
 
 public class LifeStory : ICrudable
 {
@@ -22,7 +24,7 @@ public class LifeStory : ICrudable
          EndDate,
          Location,
          Notes,
-         SourceIds = CrudableRepository.GetHashCodeFromCollection(SourceIds),
+         SourceIds = EntityRepository.GetHashCodeFromCollection(SourceIds),
          Type
       }.GetHashCode();
    }

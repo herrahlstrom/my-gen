@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MyGen.Data.Models;
+namespace MyGen.Shared.Definitions;
 
 public enum LifeStoryType
 {

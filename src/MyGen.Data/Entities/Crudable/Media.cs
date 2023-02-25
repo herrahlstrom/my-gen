@@ -1,7 +1,8 @@
-﻿using System.Diagnostics;
+﻿using MyGen.Shared.Definitions;
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 
-namespace MyGen.Data.Models;
+namespace MyGen.Data.Entities;
 
 public class Media : ICrudable
 {
@@ -28,7 +29,7 @@ public class Media : ICrudable
          Id,
          Path,
          Type,
-         Meta = CrudableRepository.GetHashCodeFromCollection(Meta),
+         Meta = EntityRepository.GetHashCodeFromCollection(Meta),
          Missing,
          Notes,
          Size,
