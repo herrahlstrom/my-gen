@@ -1,4 +1,6 @@
-﻿namespace MyGen.Shared;
+﻿using MyGen.Shared.Definitions;
+
+namespace MyGen.Shared;
 
 public static class Mapper
 {

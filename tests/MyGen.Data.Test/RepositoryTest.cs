@@ -10,7 +10,7 @@ public class RepositoryTest
 {
    private readonly Bogus.Faker _faker;
    private IFakeFileSystem _fileSystem = null!;
-   private CrudableRepository _repository = null!;
+   private EntityRepository _repository = null!;
 
    public RepositoryTest()
    {
@@ -87,7 +87,7 @@ public class RepositoryTest
    public void Initialize()
    {
       _fileSystem = new InMemoryFileSystem();
-      _repository = new CrudableRepository(_fileSystem, new NullLogger<CrudableRepository>());
+      _repository = new EntityRepository(_fileSystem, new NullLogger<EntityRepository>());
    }
 
    private Person GetPerson()

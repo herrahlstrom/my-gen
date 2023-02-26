@@ -1,6 +1,4 @@
-﻿using MyGen.Data.Entities;
-
-namespace MyGen.Data;
+﻿namespace MyGen.Data;
 
 public interface IEntityRepository
 {

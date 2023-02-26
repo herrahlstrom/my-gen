@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using MyGen.Shared.Definitions;
 
 namespace MyGen.Shared.Test;
 

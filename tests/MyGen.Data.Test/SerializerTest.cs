@@ -1,4 +1,5 @@
-using MyGen.Data.Models;
+using MyGen.Data.Entities;
+using MyGen.Shared.Definitions;
 
 namespace MyGen.Data.Test;
 

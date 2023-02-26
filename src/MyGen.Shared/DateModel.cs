@@ -1,19 +1,21 @@
-﻿using System.Text.RegularExpressions;
+﻿using MyGen.Shared.Extensions;
+using System.Text.RegularExpressions;
 
 namespace MyGen.Shared;
 
-public partial class EventDate : IEquatable<EventDate>
+public partial class DateModel : IEquatable<DateModel>
 {
    private readonly Lazy<DateOnly?> _lazyDate;
    private readonly Lazy<int?> _lazyYear;
 
-   public EventDate(string value)
+   public DateModel(string value)
    {
       Value = value;
       _lazyYear = new Lazy<int?>(GetYear);
       _lazyDate = new Lazy<DateOnly?>(GetDate);
    }
 
+   public static DateModel Empty { get; } = new DateModel("");
    public DateOnly? Date => _lazyDate.Value;
 
    public string DisplayDate
@@ -32,10 +34,11 @@ public partial class EventDate : IEquatable<EventDate>
       }
    }
 
+   public bool HasValue => Value.HasValue();
    public string Value { get; }
    public int? Year => _lazyYear.Value;
 
-   public bool Equals(EventDate? other)
+   public bool Equals(DateModel? other)
    {
       return other != null && other.Value == Value;
    }
