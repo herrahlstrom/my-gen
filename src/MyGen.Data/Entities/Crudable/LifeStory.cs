@@ -10,9 +10,10 @@ public class LifeStory : ICrudable
    public string? Date { get; set; }
    public string? EndDate { get; set; }
    public string? Location { get; set; }
-   public string Notes { get; set; } = "";
    public IList<LifeStoryMember>? Persons { get; set; }
+   public IList<LifeStoryFamily>? Families { get; set; }
    public List<Guid>? SourceIds { get; set; }
+   public string Notes { get; set; } = "";
    int ICrudable.Version => 1;
 
    public override int GetHashCode()
@@ -27,6 +28,7 @@ public class LifeStory : ICrudable
          Notes,
          SourceIds = EntityRepository.GetHashCodeFromCollection(SourceIds),
          Persons = EntityRepository.GetHashCodeFromCollection(Persons),
+         Families = EntityRepository.GetHashCodeFromCollection(Families),
          Type
       }.GetHashCode();
    }

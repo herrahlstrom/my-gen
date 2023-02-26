@@ -7,13 +7,11 @@ public class Person : ICrudable
    public required string Firstname { get; set; }
    public required string Lastname { get; set; }
    public required string Sex { get; set; }
-
    public string? Profession { get; set; }
-   public string? Notes { get; set; }
-
    public IList<PersonFamily>? Families { get; set; }
    public IList<PersonLifeStory>? LifeStories { get; set; }
    public IList<Guid>? MediaIds { get; set; }
+   public string? Notes { get; set; }
 
    public override int GetHashCode()
    {

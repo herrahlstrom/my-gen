@@ -15,6 +15,15 @@ public class LifeStoryMember
       return HashCode.Combine(PersonId, Date, EndDate);
    }
 }
+public class LifeStoryFamily
+{
+   public Guid FamilyId { get; set; }
+   public override int GetHashCode()
+   {
+      return HashCode.Combine(FamilyId);
+   }
+}
+
 
 public class PersonLifeStory
 {
@@ -29,5 +38,18 @@ public class PersonLifeStory
    public override int GetHashCode()
    {
       return HashCode.Combine(LifeStoryId, Date, EndDate, Type);
+   }
+}
+
+
+public class FamilyLifeStory
+{
+   public Guid LifeStoryId { get; set; }
+
+   public LifeStoryType Type { get; set; }
+
+   public override int GetHashCode()
+   {
+      return HashCode.Combine(LifeStoryId, Type);
    }
 }
