@@ -15,10 +15,10 @@ internal class PersonViewModel : IViewModel<PersonUserControl>, IMainTabViewMode
       _repository = repository;
    }
 
-   public EventViewModel Birth { get; set; }
+   public EventViewModel Birth { get; set; } = new EventViewModel(DateModel.Empty);
    DateModel IPerson.BirthDate { get => Birth.Date; }
-   public EventViewModel Death { get; set; }
-   DateModel IPerson.DeathDate { get => Death?.Date; }
+   public EventViewModel Death { get; set; } = new EventViewModel(DateModel.Empty);
+   DateModel IPerson.DeathDate { get => Death.Date; }
    public IList<PersonFamily> Families { get; set; } = Array.Empty<PersonFamily>();
    public IPerson? Father { get; set; }
    public string FullName => Name.FirstName + " " + Name.LastName;

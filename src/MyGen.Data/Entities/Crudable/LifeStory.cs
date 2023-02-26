@@ -5,6 +5,7 @@ namespace MyGen.Data.Entities;
 public class LifeStory : ICrudable
 {
    public Guid Id { get; set; }
+   public LifeStoryType Type { get; set; }
    public string? Name { get; set; }
    public string? Date { get; set; }
    public string? EndDate { get; set; }
@@ -12,7 +13,6 @@ public class LifeStory : ICrudable
    public string Notes { get; set; } = "";
    public IList<LifeStoryMember>? Persons { get; set; }
    public List<Guid>? SourceIds { get; set; }
-   public LifeStoryType Type { get; set; }
    int ICrudable.Version => 1;
 
    public override int GetHashCode()

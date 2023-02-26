@@ -8,7 +8,7 @@ namespace MyGen.Wpf.Shared;
 
 internal class ViewTemplateSelector : DataTemplateSelector
 {
-   public override DataTemplate SelectTemplate(object item, DependencyObject container)
+   public override DataTemplate? SelectTemplate(object item, DependencyObject container)
    {
       if(item is null)
       {

@@ -34,11 +34,11 @@ internal class PersonViewModelRepository : IViewModelRepository<PersonViewModel>
 
       viewModel.Father = (from f in person.FamiliesAsChild
                           where f.Husband != null
-                          select GetPersonSlim(f.Husband)).FirstOrDefault();
+                          select GetPersonSlim(f.Husband!)).FirstOrDefault();
 
       viewModel.Mother = (from f in person.FamiliesAsChild
                           where f.Wife != null
-                          select GetPersonSlim(f.Wife)).FirstOrDefault();
+                          select GetPersonSlim(f.Wife!)).FirstOrDefault();
    }
 
    public void SaveModel(PersonViewModel viewModel)
