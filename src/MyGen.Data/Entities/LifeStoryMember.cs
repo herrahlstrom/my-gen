@@ -4,19 +4,27 @@ namespace MyGen.Data.Entities;
 
 public class LifeStoryMember
 {
-   /// <summary>
-   ///     Only if override from LifeStory (parent)
-   /// </summary>
+   public Guid PersonId { get; set; }
+
    public string? Date { get; set; }
 
-   /// <summary>
-   ///     Only if override from LifeStory (parent)
-   /// </summary>
    public string? EndDate { get; set; }
 
+   public override int GetHashCode()
+   {
+      return HashCode.Combine(PersonId, Date, EndDate);
+   }
+}
+
+public class PersonLifeStory
+{
    public Guid LifeStoryId { get; set; }
 
    public LifeStoryType Type { get; set; }
+
+   public string? Date { get; set; }
+
+   public string? EndDate { get; set; }
 
    public override int GetHashCode()
    {

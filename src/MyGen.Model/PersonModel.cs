@@ -10,8 +10,8 @@ public class PersonModel
    private readonly Person _entity;
    private readonly IEnumerable<IEntityRef<FamilyModel>> _familiesAsChild;
    private readonly IEnumerable<IEntityRef<FamilyModel>> _familiesAsParent;
-   private readonly Lazy<LifeStoryModel?> _lazyBirth;
-   private readonly Lazy<LifeStoryModel?> _lazyDeath;
+   private readonly IEntityRef<LifeStoryModel>? _lazyBirth;
+   private readonly IEntityRef<LifeStoryModel>? _lazyDeath;
 
    internal PersonModel(Person entity, LifeStoryProvider lifeStoryProvider, FamilyProvider familyProvider)
    {
@@ -22,13 +22,15 @@ public class PersonModel
       Profession = entity.Profession ?? "";
       Notes = entity.Notes ?? "";
 
-      _lazyBirth = (entity.LifeStories?.Where(x => x.Type == LifeStoryType.Födelse).FirstOrDefault() is { } birthEntity)
-         ? new(() => lifeStoryProvider.Get(birthEntity.LifeStoryId, birthEntity))
-         : new((LifeStoryModel?)null);
+      _lazyBirth = (
+         from lsm in entity.LifeStories
+         where lsm.Type == LifeStoryType.Födelse
+         select new EntityRef<LifeStoryModel>(lsm.LifeStoryId, lifeStoryProvider)).FirstOrDefault();
 
-      _lazyDeath = entity.LifeStories?.Where(x => x.Type == LifeStoryType.Död).FirstOrDefault() is { } deathEntity
-         ? new(() => lifeStoryProvider.Get(deathEntity.LifeStoryId, deathEntity))
-         : new((LifeStoryModel?)null);
+      _lazyDeath = (
+         from lsm in entity.LifeStories
+         where lsm.Type == LifeStoryType.Död
+         select new EntityRef<LifeStoryModel>(lsm.LifeStoryId, lifeStoryProvider)).FirstOrDefault();
 
       _familiesAsParent = (
          from fm in entity.Families
@@ -41,10 +43,10 @@ public class PersonModel
          select new EntityRef<FamilyModel>(fm.FamilyId, familyProvider)).ToList();
    }
 
-   public LifeStoryModel? Birth => _lazyBirth.Value;
-   public LifeStoryModel? Death => _lazyDeath.Value;
-   public IEnumerable<FamilyModel> FamiliesAsChild => _familiesAsChild.Select(x=> x.Entity);
-   public IEnumerable<FamilyModel> FamiliesAsParent => _familiesAsParent.Select(x=> x.Entity);
+   public LifeStoryModel? Birth => _lazyBirth?.Entity;
+   public LifeStoryModel? Death => _lazyDeath?.Entity;
+   public IEnumerable<FamilyModel> FamiliesAsChild => _familiesAsChild.Select(x => x.Entity);
+   public IEnumerable<FamilyModel> FamiliesAsParent => _familiesAsParent.Select(x => x.Entity);
    public Guid Id => _entity.Id;
    public PersonName Name { get; }
    public string Notes { get; }

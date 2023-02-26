@@ -3,7 +3,7 @@
 public class Family : ICrudable
 {
    public Guid Id { get; init; }
-   public List<LifeStoryMember>? LifeStories { get; set; }
+   public List<PersonLifeStory>? LifeStories { get; set; }
    public string Notes { get; set; } = "";
    public IList<FamilyMember>? Members { get; set; }
    int ICrudable.Version => 1;
