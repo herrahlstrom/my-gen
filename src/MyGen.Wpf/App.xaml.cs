@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MyGen.Data;
+using MyGen.Model;
 using MyGen.Wpf.Main;
 using MyGen.Wpf.Shared;
 using System;
@@ -35,10 +37,12 @@ public partial class App : Application, IDisposable
 
    private void OnStartup(object sender, StartupEventArgs e)
    {
+      _services.GetRequiredService<IEntityRepository>().Load();
+
       ViewModelFactory vmFactory = _services.GetRequiredService<ViewModelFactory>();
       IViewModel<MainWindow> mainVm = vmFactory.CreateViewModelFor<MainWindow>();
 
-      mainVm.LoadAsync();
+      mainVm.Load();
 
       MainWindow = new MainWindow()
       {

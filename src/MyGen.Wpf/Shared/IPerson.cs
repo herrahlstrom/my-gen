@@ -4,8 +4,8 @@ namespace MyGen.Wpf.Shared;
 
 public interface IPerson
 {
-   EventDate BirthDate { get; }
-   EventDate DeathDate { get; }
+   DateModel BirthDate { get; }
+   DateModel DeathDate { get; }
    object? Icon { get; }
    PersonName Name { get; }
 }

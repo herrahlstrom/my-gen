@@ -1,34 +1,25 @@
-﻿using MyGen.Data;
+﻿using MyGen.Model;
 using MyGen.Wpf.Shared;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace MyGen.Wpf.Main;
 
 internal class SearchViewModelRepository : IViewModelRepository<SearchViewModel>
 {
-   private readonly CrudableRepository _crudableRepository;
+   private readonly IModelRepository _modelRepository;
 
-   public SearchViewModelRepository(CrudableRepository crudableRepository)
+   public SearchViewModelRepository(IModelRepository modelRepository)
    {
-      _crudableRepository = crudableRepository;
+      _modelRepository = modelRepository;
    }
 
-   public async Task LoadModelAsync(SearchViewModel viewModel)
+   public void LoadModel(SearchViewModel viewModel)
    {
-      await Task.Run(_crudableRepository.Load);
-
-      List<SearchResult> result = new();
-      foreach (var item in _crudableRepository.GetPersons())
-      {
-         MyGen.Shared.PersonName name = new(item.Firstname, item.Lastname);
-         result.Add(new PersonSearchResult(item.Id, name));
-      }
-
-      viewModel.SetResult(result);
+      viewModel.SetResult(from person in _modelRepository.GetPersons()
+                          select new PersonSearchResult(person.Id, person.Name));
    }
 
-   public Task SaveModelAsync(SearchViewModel viewModel)
+   public void SaveModel(SearchViewModel viewModel)
    {
       throw new System.NotImplementedException();
    }

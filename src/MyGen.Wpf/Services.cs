@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyGen.Data;
+using MyGen.Model;
 using MyGen.Wpf.Options;
 using MyGen.Wpf.Shared;
 using MyGen.Wpf.Tools;
@@ -66,8 +67,9 @@ internal class Services : IServiceProvider, IDisposable
       sc.AddSingleton<AppState>();
 
       sc.Configure<DataOptions>((options) => configuration.GetSection("Data").Bind(options));
-      sc.AddSingleton<IFileSystem, Tools.FileSystem>();
-      sc.AddSingleton<MyGen.Data.CrudableRepository>();
+      sc.AddSingleton<IFileSystem, FileSystem>();
+      sc.AddSingleton<IEntityRepository, EntityRepository>();
+      sc.AddSingleton<IModelRepository, ModelRepository>();
 
       sc.AddLogging(configure => configure
          .AddConfiguration(configuration.GetRequiredSection("Logging"))

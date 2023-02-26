@@ -1,10 +1,8 @@
 ﻿using MyGen.Wpf.Person;
 using MyGen.Wpf.Shared;
 using MyGen.Wpf.Tools;
-using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MyGen.Wpf.Main;
 
@@ -20,11 +18,11 @@ internal class MainViewModel : ViewModelBase, IViewModel<MainWindow>
 
       Search = _vmFactory.CreateViewModelFor<SearchUserControl>();
 
-      appState.OpenPerson.SetRequestCallback(async id =>
+      appState.OpenPerson.SetRequestCallback(id =>
       {
          if (_vmFactory.CreateViewModelFor<PersonUserControl>() is IMainTabViewModel viewModel)
          {
-            await viewModel.LoadAsync(id);
+            viewModel.Load(id);
             Open(viewModel);
          }
       });
@@ -46,9 +44,9 @@ internal class MainViewModel : ViewModelBase, IViewModel<MainWindow>
 
    public string Title => "My Gen";
 
-   public async Task LoadAsync(object? _)
+   public void Load(object? _)
    {
-      await Search.LoadAsync();
+      Search.Load();
    }
 
    public void Open<TModel>(TModel model) where TModel : IMainTabViewModel

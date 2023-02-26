@@ -4,7 +4,7 @@ namespace MyGen.Wpf.Shared;
 
 internal interface IViewModelRepository<TViewModel>
 {
-   Task LoadModelAsync(TViewModel viewModel);
+   void LoadModel(TViewModel viewModel);
 
-   Task SaveModelAsync(TViewModel viewModel);
+   void SaveModel(TViewModel viewModel);
 }

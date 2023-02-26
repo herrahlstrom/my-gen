@@ -4,7 +4,6 @@ using MyGen.Wpf.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -14,10 +13,10 @@ namespace MyGen.Wpf.Main;
 internal class SearchViewModel : IViewModel<SearchUserControl>
 {
    private readonly IViewModelRepository<SearchViewModel> _repository;
+   private Timer _autoSearchTimer;
    private string _filter = "";
    private string[] _filterComponents = Array.Empty<string>();
    private List<SearchResult> _result;
-   Timer _autoSearchTimer;
 
    public SearchViewModel(IViewModelRepository<SearchViewModel> repository, AppState appState)
    {
@@ -61,9 +60,9 @@ internal class SearchViewModel : IViewModel<SearchUserControl>
    public ListCollectionView ResultView { get; }
    public string Title => throw new NotImplementedException();
 
-   public async Task LoadAsync(object? argument = null)
+   public void Load(object? argument = null)
    {
-      await _repository.LoadModelAsync(this);
+      _repository.LoadModel(this);
    }
 
    public void SetResult(IEnumerable<SearchResult> items)

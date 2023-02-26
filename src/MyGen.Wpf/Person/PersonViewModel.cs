@@ -1,8 +1,8 @@
 ﻿using MyGen.Shared;
+using MyGen.Shared.Definitions;
 using MyGen.Wpf.Shared;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MyGen.Wpf.Person;
 
@@ -16,12 +16,13 @@ internal class PersonViewModel : IViewModel<PersonUserControl>, IMainTabViewMode
    }
 
    public EventViewModel Birth { get; set; }
-   EventDate IPerson.BirthDate { get => Birth.Date; }
-   public EventViewModel? Death { get; set; }
-   EventDate IPerson.DeathDate { get => Death?.Date; }
+   DateModel IPerson.BirthDate { get => Birth.Date; }
+   public EventViewModel Death { get; set; }
+   DateModel IPerson.DeathDate { get => Death?.Date; }
    public IList<PersonFamily> Families { get; set; } = Array.Empty<PersonFamily>();
    public IPerson? Father { get; set; }
    public string FullName => Name.FirstName + " " + Name.LastName;
+   public object? Icon { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
    public Guid Id { get; private set; }
    object IMainTabViewModel.Id => Id;
    public IPerson? Mother { get; set; }
@@ -30,9 +31,8 @@ internal class PersonViewModel : IViewModel<PersonUserControl>, IMainTabViewMode
    public string Profession { get; set; } = "";
    public Sex Sex { get; set; } = Sex.Unknown;
    string IMainTabViewModel.Title => Name.GivenName + " " + Name.LastName;
-   public object? Icon { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-   public async Task LoadAsync(object? argument = null)
+   public void Load(object? argument = null)
    {
       if (argument is not Guid id)
       {
@@ -40,10 +40,10 @@ internal class PersonViewModel : IViewModel<PersonUserControl>, IMainTabViewMode
       }
 
       Id = id;
-      await _repository.LoadModelAsync(this);
+      _repository.LoadModel(this);
    }
 }
 
-internal record EventViewModel(EventDate Date, string? Location = null);
+internal record EventViewModel(DateModel Date, string? Location = null);
 
 internal record PersonFamily(IPerson Partner, IList<IPerson> Children);
